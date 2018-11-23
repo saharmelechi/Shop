@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
+using Shop.Models;
 
 namespace Shop
 {
@@ -33,6 +35,9 @@ namespace Shop
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.AddDbContext<MyShopContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("MyShopContext")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
