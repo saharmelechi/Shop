@@ -12,7 +12,7 @@ namespace Shop.Models
 
         public int Quantity { get; set; }
 
-        //public int Category { get; set; }
+        public int Category { get; set; }
 
         public double Price { get; set; }
 
