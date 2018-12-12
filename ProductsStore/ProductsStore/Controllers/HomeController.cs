@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using ProductsStore.Models;
 
 namespace ProductsStore.Controllers
@@ -11,6 +13,10 @@ namespace ProductsStore.Controllers
     public class HomeController : Controller
     {
         private readonly StoreContext _context;
+
+        public const string ADMIN_SESSION_KEY = "Admin";
+        public const string USER_SESSION_KEY = "User";
+        private const string CART_SESSION_KEY = "Cart";
 
         public HomeController(StoreContext context)
         {
@@ -56,7 +62,7 @@ namespace ProductsStore.Controllers
             List<int> users = new List<int>();
             //if (Session["User"] != null && Session["Admin"] == null)
             //TODO: Understand what the code do and fix it.
-            if(false)
+            if (false)
             {
                 User use = null;// (User)Session["User"];
                 users = null;// listusers(use);
@@ -129,37 +135,59 @@ namespace ProductsStore.Controllers
             }
         }
 
+        public ActionResult Logout()
+        {
+            HttpContext.Session.SetString(USER_SESSION_KEY, null);
+            HttpContext.Session.SetString(ADMIN_SESSION_KEY, null);
+            return View("Login");
+        }
+
+        public ActionResult Login()
+        {
+            ViewBag.Message = "Login Page.";
+
+            return View("Login");
+        }
+
+
+
         [HttpPost]
         public ActionResult Login(User user)
         {
-            if (user.email == "y@y.com" && user.pass == "12345")
-            {
-                Session["Admin"] = true;
-                Session["User"] = new User();
-                return RedirectToAction("Index", "Products");
-            }
-            else
-            {
-                var userInfo = db.Users.Where(s => s.email == user.email.Trim() && s.pass == user.pass.Trim()).FirstOrDefault();
 
+            // Initiate user
+            var userInfo = _context.User.Where(s => s.email == user.email.Trim() && s.pass == user.pass.Trim()).FirstOrDefault();
 
-                if (userInfo != null)
+            // Check if user logged
+            if (userInfo != null)
+            {
+                string usr = JsonConvert.SerializeObject(userInfo);
+
+                // Check if the user is admin
+                if (user.isAdmin == true)
                 {
-                    Session["User"] = userInfo;
-                    Session["Cart"] = new Cart();
+                    HttpContext.Session.SetInt32(ADMIN_SESSION_KEY, 1);
+                    string adm = JsonConvert.SerializeObject(new User());
+                    HttpContext.Session.SetString(USER_SESSION_KEY, adm);
+                    return RedirectToAction("Index", "Products");
                 }
+
+                // Get regular user
+                HttpContext.Session.SetString(USER_SESSION_KEY, usr);
+                var crt = JsonConvert.SerializeObject(new Cart());
+                HttpContext.Session.SetString(CART_SESSION_KEY, crt);
                 return RedirectToAction("Index", "Home");
             }
 
-
+            return new EmptyResult();
 
         }
 
         [HttpPost]
         public ActionResult Register(User user)
         {
-            db.Users.Add(user);
-            db.SaveChanges();
+            _context.User.Add(user);
+            _context.SaveChanges();
             return View("Login");
         }
 

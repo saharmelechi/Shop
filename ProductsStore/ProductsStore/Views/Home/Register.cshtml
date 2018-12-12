@@ -1,4 +1,4 @@
-﻿@model ProductStore.Models.User
+﻿@model ProductsStore.Models.User
 
 @{
     ViewBag.Title = "Register";
@@ -57,25 +57,6 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.single, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.single)
-                    @Html.ValidationMessageFor(model => model.single, "", new { @class = "text-danger" })
-                </div>
-            </div>
-        </div>
-
-
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.numchildren, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.numchildren, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.numchildren, "", new { @class = "text-danger" })
-            </div>
-        </div>
-        <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Create" class="btn btn-default" />
             </div>
@@ -89,8 +70,8 @@
 </div>
 
 @section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-
+    @**// TODO:INITIATE LOCALLY after download from nuget - Install-Package jQuery.Validation*@
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.0/dist/jquery.validate.js"></script>
 }
 
 <script>
