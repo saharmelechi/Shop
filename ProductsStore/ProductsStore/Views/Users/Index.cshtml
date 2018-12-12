@@ -24,14 +24,8 @@
             <th>
                 @Html.DisplayNameFor(model => model.email)
             </th>
-            <th>
+            <th> @**TODO: Does show the date when not choose hour, fix *@
                 @Html.DisplayNameFor(model => model.birthDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.single)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.numchildren)
             </th>
             <th></th>
         </tr>
@@ -53,12 +47,6 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.birthDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.single)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.numchildren)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |

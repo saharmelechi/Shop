@@ -33,11 +33,8 @@ namespace ProductsStore.Models
         [Display(Name = "birth Date")]
         public Nullable<System.DateTime> birthDate { get; set; }
         [Required]
-        public Nullable<bool> single { get; set; }
-        [Display(Name = "num of children")]
-        [Required]
-        [RegularExpression("^[0-9]*$", ErrorMessage = "UPRN must be numeric")]
-        public int numchildren { get; set; }
+        public bool isAdmin { get; set; }
+       
 
         public virtual ICollection<Order> Orders { get; set; }
     }
