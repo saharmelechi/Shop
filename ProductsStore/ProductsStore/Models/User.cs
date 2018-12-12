@@ -10,7 +10,7 @@ namespace ProductsStore.Models
     {
         public User()
         {
-            //this.Orders = new HashSet<Order>();
+            this.Orders = new HashSet<Order>();
         }
 
         public int ID { get; set; }

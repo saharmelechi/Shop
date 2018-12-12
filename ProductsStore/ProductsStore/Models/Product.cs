@@ -16,13 +16,13 @@ namespace ProductsStore.Models
         }
 
         public int ID { get; set; }
-        [Display(Name = "first Name")]
+        [Display(Name = "Full Name")]
         [Required]
         [StringLength(20)]
         public string name { get; set; }
         [Required]
         public Nullable<int> price { get; set; }
-        [Display(Name = "first Name")]
+        [Display(Name = "Description")]
         [Required]
         [StringLength(20)]
         public string description { get; set; }
