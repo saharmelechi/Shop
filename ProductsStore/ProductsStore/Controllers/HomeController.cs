@@ -14,6 +14,8 @@ namespace ProductsStore.Controllers
     {
         private readonly StoreContext _context;
 
+        private readonly ISession session;
+
         public const string ADMIN_SESSION_KEY = "Admin";
         public const string USER_SESSION_KEY = "User";
         private const string CART_SESSION_KEY = "Cart";
@@ -27,6 +29,8 @@ namespace ProductsStore.Controllers
         {
             HomeVm homeVm = new HomeVm();
             homeVm.Products = _context.Product.ToList();
+
+
 
             return View(homeVm);
         }
@@ -137,8 +141,8 @@ namespace ProductsStore.Controllers
 
         public ActionResult Logout()
         {
-            HttpContext.Session.SetString(USER_SESSION_KEY, null);
-            HttpContext.Session.SetString(ADMIN_SESSION_KEY, null);
+            HttpContext.Session.SetString(USER_SESSION_KEY, String.Empty);
+            HttpContext.Session.SetString(ADMIN_SESSION_KEY, String.Empty);
             return View("Login");
         }
 
@@ -156,7 +160,7 @@ namespace ProductsStore.Controllers
         {
 
             // Initiate user
-            var userInfo = _context.User.Where(s => s.email == user.email.Trim() && s.pass == user.pass.Trim()).FirstOrDefault();
+            var userInfo = _context.User.Where(s => s.email == user.email.Trim() && s.pass == (user.pass ?? "").Trim()).FirstOrDefault();
 
             // Check if user logged
             if (userInfo != null)
@@ -164,7 +168,7 @@ namespace ProductsStore.Controllers
                 string usr = JsonConvert.SerializeObject(userInfo);
 
                 // Check if the user is admin
-                if (user.isAdmin == true)
+                if (userInfo.isAdmin)
                 {
                     HttpContext.Session.SetInt32(ADMIN_SESSION_KEY, 1);
                     string adm = JsonConvert.SerializeObject(new User());
@@ -201,15 +205,15 @@ namespace ProductsStore.Controllers
         [HttpPost]
         public ActionResult Search()
         {
-            var prodName = Request.Form["prodName"];
+            string prodName = Request.Form["prodName"];
             var fromPrice = Request.Form["txtFromPrice"];
             var txtToPrice = Request.Form["txtToPrice"];
-
             var products = from p in _context.Product
                            select p;
             if (!String.IsNullOrEmpty(prodName))
             {
-                products = products.Where(s => s.name.Contains(prodName));
+                prodName = prodName.ToLower();
+                products = products.Where(s => s.name.ToLower().Contains(prodName));
             }
 
             if (!String.IsNullOrEmpty(fromPrice))

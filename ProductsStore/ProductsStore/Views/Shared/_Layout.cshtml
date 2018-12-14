@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -28,11 +29,39 @@
                 </button>
                 <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">ProductsStore</a>
             </div>
+            @*<div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+                        <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
+                        <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
+                    </ul>
+                </div>*@
+
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
+                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                    @if (Context.Session.GetString("User") == null)
+                    {
+                        <li>@Html.ActionLink("Login", "Login", "Home")</li>
+                        <li>@Html.ActionLink("Register", "Register", "Home")</li>
+                    }
+                    else
+                    {
+                        <li>@Html.ActionLink("Logout", "Logout", "Home")</li>
+                        if (Context.Session.GetString("Admin") != null)
+                        {
+                            <li>@Html.ActionLink("Products", "Index", "Products")</li>
+                            <li>@Html.ActionLink("Orders", "Index", "Orders")</li>
+                            <li>@Html.ActionLink("Users", "Index", "Users")</li>
+                            <li>@Html.ActionLink("User Order Report", "Reports", "Orders")</li>
+                            <li>@Html.ActionLink("product per order reposrt", "ProductsReports", "Orders")</li>
+                            <li>@Html.ActionLink("Update Address", "Index", "Addresses")</li>
+                        }
+                    }
+
+                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    <li>@Html.ActionLink("About", "About", "Home")</li>
+
                 </ul>
             </div>
         </div>
