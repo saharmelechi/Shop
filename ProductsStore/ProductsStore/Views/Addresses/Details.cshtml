@@ -1,7 +1,7 @@
 ﻿@model ProductsStore.Models.Address
 
 @{
-    ViewData["Title"] = "Details";
+    ViewBag.Title = "Details";
 }
 
 <h2>Details</h2>
@@ -13,24 +13,30 @@
         <dt>
             @Html.DisplayNameFor(model => model.City)
         </dt>
+
         <dd>
             @Html.DisplayFor(model => model.City)
         </dd>
+
         <dt>
             @Html.DisplayNameFor(model => model.Street)
         </dt>
+
         <dd>
             @Html.DisplayFor(model => model.Street)
         </dd>
+
         <dt>
             @Html.DisplayNameFor(model => model.Number)
         </dt>
+
         <dd>
             @Html.DisplayFor(model => model.Number)
         </dd>
+
     </dl>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.ID">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

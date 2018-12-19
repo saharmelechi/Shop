@@ -18,17 +18,17 @@ namespace ProductsStore.Models
 
         public DbSet<ProductsStore.Models.Order> Order { get; set; }
 
+        public DbSet<ProductsStore.Models.Address> Address { get; set; }
+
+        public DbSet<ProductsStore.Models.User> User { get; set; }
+
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //modelBuilder.Entity<Order>()
-            //    .HasOne(c => c.Products).WithMany(i => i.Orders)
-            //    .Map(t => t.MapLeftKey("Order_ID")
-            //        .MapRightKey("Product_ID")
-            //        .ToTable("OrderProducts"));
-
-
+           
             modelBuilder.Entity<Order>()
                 .HasKey(t => t.ID);
+
             modelBuilder.Entity<Product>()
                 .HasKey(t => t.ID);
 
@@ -53,9 +53,6 @@ namespace ProductsStore.Models
             base.OnModelCreating(modelBuilder);
         }
 
-        public DbSet<ProductsStore.Models.Address> Address { get; set; }
-
-        public DbSet<ProductsStore.Models.User> User { get; set; }
 
 
     }

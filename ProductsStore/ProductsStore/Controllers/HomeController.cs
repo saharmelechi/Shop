@@ -14,7 +14,6 @@ namespace ProductsStore.Controllers
     {
         private readonly StoreContext _context;
 
-        private readonly ISession session;
 
         public const string ADMIN_SESSION_KEY = "Admin";
         public const string USER_SESSION_KEY = "User";
@@ -22,16 +21,16 @@ namespace ProductsStore.Controllers
 
         public HomeController(StoreContext context)
         {
+            
             _context = context;
         }
 
         public IActionResult Index()
         {
             HomeVm homeVm = new HomeVm();
+            HttpContext.Session.SetInt32(USER_SESSION_KEY, 0);
+            HttpContext.Session.SetInt32(ADMIN_SESSION_KEY, 0);
             homeVm.Products = _context.Product.ToList();
-
-
-
             return View(homeVm);
         }
 
@@ -141,32 +140,27 @@ namespace ProductsStore.Controllers
 
         public ActionResult Logout()
         {
-            HttpContext.Session.SetString(USER_SESSION_KEY, String.Empty);
-            HttpContext.Session.SetString(ADMIN_SESSION_KEY, String.Empty);
+            HttpContext.Session.SetInt32(USER_SESSION_KEY, 0);
+            HttpContext.Session.SetInt32(ADMIN_SESSION_KEY, 0);
             return View("Login");
         }
 
         public ActionResult Login()
         {
             ViewBag.Message = "Login Page.";
-
             return View("Login");
         }
-
-
 
         [HttpPost]
         public ActionResult Login(User user)
         {
-
             // Initiate user
             var userInfo = _context.User.Where(s => s.email == user.email.Trim() && s.pass == (user.pass ?? "").Trim()).FirstOrDefault();
-
+            
             // Check if user logged
             if (userInfo != null)
             {
                 string usr = JsonConvert.SerializeObject(userInfo);
-
                 // Check if the user is admin
                 if (userInfo.isAdmin)
                 {
@@ -182,9 +176,7 @@ namespace ProductsStore.Controllers
                 HttpContext.Session.SetString(CART_SESSION_KEY, crt);
                 return RedirectToAction("Index", "Home");
             }
-
             return new EmptyResult();
-
         }
 
         [HttpPost]
@@ -198,7 +190,6 @@ namespace ProductsStore.Controllers
         public ActionResult Register()
         {
             ViewBag.Message = "Register Page";
-
             return View("Register");
         }
 

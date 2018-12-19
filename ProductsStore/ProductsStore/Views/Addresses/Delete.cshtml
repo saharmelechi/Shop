@@ -1,7 +1,7 @@
 ﻿@model ProductsStore.Models.Address
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewBag.Title = "Delete";
 }
 
 <h2>Delete</h2>
@@ -14,26 +14,35 @@
         <dt>
             @Html.DisplayNameFor(model => model.City)
         </dt>
+
         <dd>
             @Html.DisplayFor(model => model.City)
         </dd>
+
         <dt>
             @Html.DisplayNameFor(model => model.Street)
         </dt>
+
         <dd>
             @Html.DisplayFor(model => model.Street)
         </dd>
+
         <dt>
             @Html.DisplayNameFor(model => model.Number)
         </dt>
+
         <dd>
             @Html.DisplayFor(model => model.Number)
         </dd>
+
     </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="ID" />
-        <input type="submit" value="Delete" class="btn btn-default" /> |
-        <a asp-action="Index">Back to List</a>
-    </form>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
 </div>

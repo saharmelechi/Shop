@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -13,37 +14,29 @@ namespace ProductsStore.Controllers
     {
         private readonly StoreContext _context;
 
-        public AddressesController(StoreContext context)
-        {
-            _context = context;
-        }
-
         // GET: Addresses
-        public async Task<IActionResult> Index()
+        public ActionResult Index()
         {
-            return View(await _context.Address.ToListAsync());
+            return View(_context.Address.ToList());
         }
 
         // GET: Addresses/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public ActionResult Details(int? id)
         {
             if (id == null)
             {
-                return NotFound();
+                return StatusCode(500); //Return status http error
             }
-
-            var address = await _context.Address
-                .FirstOrDefaultAsync(m => m.ID == id);
+            Address address = _context.Address.Find(id);
             if (address == null)
             {
-                return NotFound();
+                return StatusCode(418); // Return any http that not found
             }
-
             return View(address);
         }
 
         // GET: Addresses/Create
-        public IActionResult Create()
+        public ActionResult Create()
         {
             return View();
         }
@@ -53,29 +46,29 @@ namespace ProductsStore.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,City,Street,Number")] Address address)
+        public ActionResult Create([Bind("ID,City,Street,Number")] Address address)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(address);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                _context.Address.Add(address);
+                _context.SaveChanges();
+                return RedirectToAction("Index");
             }
+
             return View(address);
         }
 
         // GET: Addresses/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public ActionResult Edit(int? id)
         {
             if (id == null)
             {
-                return NotFound();
+                return StatusCode(500);
             }
-
-            var address = await _context.Address.FindAsync(id);
+            Address address = _context.Address.Find(id);
             if (address == null)
             {
-                return NotFound();
+                return StatusCode(418);
             }
             return View(address);
         }
@@ -85,68 +78,50 @@ namespace ProductsStore.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,City,Street,Number")] Address address)
+        public ActionResult Edit([Bind("ID,City,Street,Number")] Address address)
         {
-            if (id != address.ID)
-            {
-                return NotFound();
-            }
-
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(address);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!AddressExists(address.ID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                _context.Entry(address).State = EntityState.Modified;
+                _context.SaveChanges();
+                return RedirectToAction("Index");
             }
             return View(address);
         }
 
         // GET: Addresses/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public ActionResult Delete(int? id)
         {
             if (id == null)
             {
-                return NotFound();
+                return StatusCode(500); //Return status http error
             }
-
-            var address = await _context.Address
-                .FirstOrDefaultAsync(m => m.ID == id);
+            Address address = _context.Address.Find(id);
             if (address == null)
             {
-                return NotFound();
+                return StatusCode(418); // Return any http that not found
             }
-
             return View(address);
         }
 
         // POST: Addresses/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(int id)
         {
-            var address = await _context.Address.FindAsync(id);
+            Address address = _context.Address.Find(id);
             _context.Address.Remove(address);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            _context.SaveChanges();
+            return RedirectToAction("Index");
         }
 
-        private bool AddressExists(int id)
+        protected override void Dispose(bool disposing)
         {
-            return _context.Address.Any(e => e.ID == id);
+            if (disposing)
+            {
+                _context.Dispose();
+            }
+            base.Dispose(disposing);
         }
     }
 }
