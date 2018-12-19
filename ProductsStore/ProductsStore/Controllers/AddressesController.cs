@@ -14,6 +14,11 @@ namespace ProductsStore.Controllers
     {
         private readonly StoreContext _context;
 
+        public AddressesController(StoreContext context)
+        {
+            _context = context;
+        }
+
         // GET: Addresses
         public ActionResult Index()
         {
