@@ -1,0 +1,158 @@
+﻿@model IEnumerable<ProductsStore.Models.UserOrderReport>
+@{
+    ViewBag.Title = "Report";
+}
+<style>
+    .tooltip {
+        position: absolute;
+        text-align: center;
+        width: 13%;
+        height: 10%;
+        padding: 2vw;
+        font: 1.2vw sans-serif;
+        border: 0px;
+        border-radius: 8px;
+        color: black;
+        box-shadow: -3px 3px 15px #888888;
+        opacity: 0;
+    }
+</style>
+
+<h2>Report</h2>
+<label>
+    Show Products per Orders
+</label>
+<div class="" style="margin-top:10px;margin-bottom:10px;">
+    <div style="margin-top:20px;">
+
+        <div id="svgContent"></div>
+        <canvas id="productsOrder" width="960" height="200"></canvas>
+    </div>
+    <script>
+        $(function () {
+
+
+            $.ajax({
+                url: "/Orders/GetProdectsPerOrder",
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: {},
+                success: function (data, textStatus, jqXHR) {
+
+                    //productsOrders(data);
+                    prod1(data);
+                },
+
+                error: function (jqXHR, textStatus, errorThrown) {
+
+                }
+            });
+
+        });
+
+        function prod1(data) {
+
+            var margin = { top: 40, left: 40, right: 40, bottom: 40 };
+            width = 300;
+            height = 300;
+            radius = Math.min(width - 100, height - 100) / 2;
+            var color = d3.scale.category10();
+            var arc = d3.svg.arc()
+                     .outerRadius(radius - 230)
+                     .innerRadius(radius - 50)
+                     .cornerRadius(20);
+            var arcOver = d3.svg.arc()
+            .outerRadius(radius + 50)
+            .innerRadius(0);
+
+            var a = width / 2 - 20;
+            var b = height / 2 - 90;
+            var svg = d3.select("#svgContent").append("svg")
+                      .attr("viewBox", "0 0 " + width + " " + height / 2)
+                .attr("preserveAspectRatio", "xMidYMid meet")
+                      .append("g")
+                      .attr("transform", "translate(" + a + "," + b + ")");
+
+            div = d3.select("body")
+  .append("div")
+  .attr("class", "tooltip");
+            var pie = d3.layout.pie()
+                      .sort(null)
+                      .value(function (d) { return d.NumOfOrders; })
+                      .padAngle(.02);
+            var g = svg.selectAll(".arc")
+                    .data(pie(data))
+                    .enter()
+                    .append("g")
+                    .attr("class", "arc")
+                     .on("mousemove", function (d) {
+                         var mouseVal = d3.mouse(this);
+                         div.style("display", "none");
+                         div
+                         .html("Product:" + d.data.Name + "</br>" + "No. of Orders:" + d.data.NumOfOrders)
+                         .style("left", (d3.event.pageX + 12) + "px")
+                         .style("top", (d3.event.pageY - 10) + "px")
+                         .style("opacity", 1)
+                         .style("display", "block");
+                     })
+                    .on("mouseout", function () { div.html(" ").style("display", "none"); });
+
+
+
+            g.append("path")
+            .attr("d", arc)
+            .style("fill", function (d) { return color(d.data.Name); })
+             .attr("d", arc);;
+
+        }
+        function productsOrders(data) {
+            var canvas = document.querySelector("#productsOrder"),
+                               context = canvas.getContext("2d");
+
+            var width = canvas.width,
+                height = canvas.height,
+                radius = Math.min(width, height) / 2;
+
+            var colors = ["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"];
+
+            var arc = d3.arc()
+                .outerRadius(radius - 10)
+                .innerRadius(0)
+                .context(context);
+
+            var labelArc = d3.arc()
+                .outerRadius(radius - 40)
+                .innerRadius(radius - 40)
+                .context(context);
+
+            var pie = d3.pie()
+                .sort(null)
+                .value(function (d) { return d.NumOfOrders; });
+
+            context.translate(width / 2, height / 2);
+
+            var arcs = pie(data);
+
+            arcs.forEach(function (d, i) {
+                context.beginPath();
+                arc(d);
+                context.fillStyle = colors[i];
+                context.fill();
+            });
+
+            context.beginPath();
+            arcs.forEach(arc);
+            context.strokeStyle = "#fff";
+            context.stroke();
+
+            context.textAlign = "center";
+            context.textBaseline = "middle";
+            context.fillStyle = "#000";
+            arcs.forEach(function (d) {
+                var c = labelArc.centroid(d);
+                context.fillText(d.data.Name, c[0], c[1]);
+            });
+        }
+    </script>
+</div>

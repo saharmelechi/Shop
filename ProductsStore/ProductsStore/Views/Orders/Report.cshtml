@@ -1,0 +1,158 @@
+﻿@model IEnumerable<ProductsStore.Models.UserOrderReport>
+@{
+    ViewBag.Title = "Report";
+}
+
+<h2>Report</h2>
+<div class="" style="margin-top:10px;margin-bottom:10px;">
+    @using (Html.BeginForm("ApplyReport", "Orders"))
+    {
+        <label>
+            Show User Orders
+        </label>
+        <div class="form-group">
+
+            <button type="submit" class="btn btn-warning" style="margin-top:25px;">Apply</button>
+        </div>
+
+    }
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.UserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Count)
+            </th>
+
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Count)
+                </td>
+
+            </tr>
+        }
+
+    </table>
+    <div>
+        <svg width="960" height="500"></svg>
+        @*<canvas id="userOrders" width="960" height="200"></canvas>*@
+    </div>
+   
+    <script>
+        $(function() {
+
+            $.ajax({
+                url: "/Orders/GetUsersPerOrder",
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: {},
+                success: function(data, textStatus, jqXHR) {
+
+                    userOrders(data);
+                },
+
+                error: function(jqXHR, textStatus, errorThrown) {
+
+                }
+            });
+
+
+            function userOrders(data) {
+
+
+                var svg = d3.select("svg"),
+    width = +svg.attr("width"),
+    height = +svg.attr("height"),
+    radius = Math.min(width, height) / 2,
+    g = svg.append("g").attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+                var color = d3.scaleOrdinal(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+
+                var pie = d3.pie()
+                    .sort(null)
+                    .value(function (d) { return d.NumOfOrders; });
+
+                var path = d3.arc()
+                    .outerRadius(radius - 10)
+                    .innerRadius(0);
+
+                var label = d3.arc()
+                    .outerRadius(radius - 40)
+                    .innerRadius(radius - 40);
+
+                var arc = g.selectAll(".arc")
+                    .data(pie(data))
+                    .enter().append("g")
+                      .attr("class", "arc");
+
+                arc.append("path")
+                    .attr("d", path)
+                    .attr("fill", function (d) { return color(d.data.Name); });
+
+                arc.append("text")
+                    .attr("transform", function (d) { return "translate(" + label.centroid(d) + ")"; })
+                    .attr("dy", "0.35em")
+                    .text(function (d) { return d.data.Name; });
+
+
+                //var canvas = document.querySelector("#userOrders"),
+                //    context = canvas.getContext("2d");
+
+                //var width = canvas.width,
+                //    height = canvas.height,
+                //    radius = Math.min(width, height) / 2;
+
+                //var colors = ["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"];
+
+                //var arc = d3.arc()
+                //    .outerRadius(radius - 10)
+                //    .innerRadius(0)
+                //    .context(context);
+
+                //var labelArc = d3.arc()
+                //    .outerRadius(radius - 40)
+                //    .innerRadius(radius - 40)
+                //    .context(context);
+
+                //var pie = d3.pie()
+                //    .sort(null)
+                //    .value(function(d) { return d.NumOfOrders; });
+
+                //context.translate(width / 2, height / 2);
+
+                //var arcs = pie(data);
+
+                //arcs.forEach(function(d, i) {
+                //    context.beginPath();
+                //    arc(d);
+                //    context.fillStyle = colors[i];
+                //    context.fill();
+                //});
+
+                //context.beginPath();
+                //arcs.forEach(arc);
+                //context.strokeStyle = "#fff";
+                //context.stroke();
+
+                //context.textAlign = "center";
+                //context.textBaseline = "middle";
+                //context.fillStyle = "#000";
+                //arcs.forEach(function(d) {
+                //    var c = labelArc.centroid(d);
+                //    context.fillText(d.data.Name, c[0], c[1]);
+                //});
+            }
+
+        });
+    </script>
+</div>

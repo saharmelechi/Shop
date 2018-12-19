@@ -19,35 +19,31 @@ namespace ProductsStore.Controllers
         }
 
         // GET: Orders
-        public async Task<IActionResult> Index()
+        public ActionResult Index()
         {
-            var storeContext = _context.Order.Include(o => o.User);
-            return View(await storeContext.ToListAsync());
+            var orders = _context.Order.Include(o => o.User);
+            return View(orders.ToList());
         }
 
         // GET: Orders/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public ActionResult Details(int? id)
         {
             if (id == null)
             {
-                return NotFound();
+                return StatusCode(500);
             }
-
-            var order = await _context.Order
-                .Include(o => o.User)
-                .FirstOrDefaultAsync(m => m.ID == id);
+            Order order = _context.Order.Find(id);
             if (order == null)
             {
-                return NotFound();
+                return StatusCode(418);
             }
-
             return View(order);
         }
 
         // GET: Orders/Create
-        public IActionResult Create()
+        public ActionResult Create()
         {
-            ViewData["userID"] = new SelectList(_context.Set<User>(), "ID", "email");
+            ViewBag.userID = new SelectList(_context.User, "ID", "firstName");
             return View();
         }
 
@@ -56,32 +52,32 @@ namespace ProductsStore.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,userID,orderDate,creditCardNum,amount")] Order order)
+        public ActionResult Create([Bind("ID,userID,orderDate,creditCardNum,amount")] Order order)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(order);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                _context.Order.Add(order);
+                _context.SaveChanges();
+                return RedirectToAction("Index");
             }
-            ViewData["userID"] = new SelectList(_context.Set<User>(), "ID", "email", order.userID);
+
+            ViewBag.userID = new SelectList(_context.User, "ID", "firstName", order.userID);
             return View(order);
         }
 
         // GET: Orders/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public ActionResult Edit(int? id)
         {
             if (id == null)
             {
-                return NotFound();
+                return StatusCode(500);
             }
-
-            var order = await _context.Order.FindAsync(id);
+            Order order = _context.Order.Find(id);
             if (order == null)
             {
-                return NotFound();
+                return StatusCode(418);
             }
-            ViewData["userID"] = new SelectList(_context.Set<User>(), "ID", "email", order.userID);
+            ViewBag.userID = new SelectList(_context.User, "ID", "firstName", order.userID);
             return View(order);
         }
 
@@ -90,70 +86,156 @@ namespace ProductsStore.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,userID,orderDate,creditCardNum,amount")] Order order)
+        public ActionResult Edit([Bind("ID,userID,orderDate,creditCardNum,amount")] Order order)
         {
-            if (id != order.ID)
-            {
-                return NotFound();
-            }
-
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(order);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!OrderExists(order.ID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                _context.Entry(order).State = EntityState.Modified;
+                _context.SaveChanges();
+                return RedirectToAction("Index");
             }
-            ViewData["userID"] = new SelectList(_context.Set<User>(), "ID", "email", order.userID);
+            ViewBag.userID = new SelectList(_context.User, "ID", "firstName", order.userID);
             return View(order);
         }
 
         // GET: Orders/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public ActionResult Delete(int? id)
         {
             if (id == null)
             {
-                return NotFound();
+                return StatusCode(500);
             }
-
-            var order = await _context.Order
-                .Include(o => o.User)
-                .FirstOrDefaultAsync(m => m.ID == id);
+            Order order = _context.Order.Find(id);
             if (order == null)
             {
-                return NotFound();
+                return StatusCode(418);
             }
-
             return View(order);
         }
 
         // POST: Orders/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(int id)
         {
-            var order = await _context.Order.FindAsync(id);
+            Order order = _context.Order.Find(id);
             _context.Order.Remove(order);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            _context.SaveChanges();
+            return RedirectToAction("Index");
         }
 
-        private bool OrderExists(int id)
+        public ActionResult Reports()
         {
-            return _context.Order.Any(e => e.ID == id);
+            return View("Report", new List<UserOrderReport>());
         }
+
+        public ActionResult ProductsReports()
+        {
+            return View("ProductsReport", new List<UserOrderReport>());
+        }
+
+        [HttpPost]
+        public ActionResult ApplyReport()
+        {
+
+            var result = from order in
+                 (
+                     from o in _context.Order
+                     select new
+                     {
+                         Order = o,
+                         UserName = o.userID
+                     }
+                 )
+                         orderby order.Order.userID
+                         group order by order.Order.userID into g
+                         select new
+                         {
+                             User = g.Key,
+                             UserName = "",
+                             Count = g.Count()
+                         };
+
+            var users = _context.User.ToList();
+            List<UserOrderReport> userOrderReports = new List<UserOrderReport>();
+            foreach (var item in result)
+            {
+                var user = users.Where(x => x.ID == item.User).FirstOrDefault();
+                userOrderReports.Add(new Models.UserOrderReport { Count = item.Count, UserName = (user.firstName + " " + user.lastName) });
+
+            }
+
+            return View("Report", userOrderReports);
+        }
+
+
+        public JsonResult GetUsersPerOrder()
+        {
+            List<UserOrderPear> userOrders = new List<UserOrderPear>();
+            var users = _context.User.ToList();
+
+            foreach (var item in users)
+            {
+                userOrders.Add(
+                    new UserOrderPear
+                    {
+                        Name = item.firstName + " " + item.lastName,
+                        NumOfOrders = item.Orders.Count()
+                    });
+
+            }
+            return Json(userOrders);
+        }
+        public JsonResult GetProdectsPerOrder()
+        {
+            List<UserOrderPear> productsPerOrders = new List<UserOrderPear>();
+
+            var products = _context.Product.ToList();
+
+            foreach (var item in products)
+            {
+                productsPerOrders.Add(
+                    new UserOrderPear
+                    {
+                        Name = item.name,
+                        NumOfOrders = item.Orders.Count()
+                    });
+
+            }
+            return Json(productsPerOrders);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _context.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        [HttpPost]
+        public ActionResult Search()
+        {
+            var name = Request.Form["txtname"];
+
+
+            var orders = from p in _context.Order
+                         select p;
+            if (!String.IsNullOrEmpty(name))
+            {
+                orders = orders.Where(s => s.User.firstName.Contains(name) || s.User.lastName.Contains(name));
+            }
+
+
+            return View("Index", orders);
+
+        }
+    }
+
+    public class UserOrderPear
+    {
+        public string Name { get; set; }
+        public int NumOfOrders { get; set; }
     }
 }

@@ -1,35 +1,51 @@
 ﻿@model IEnumerable<ProductsStore.Models.Order>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>Orders</h2>
+<div class="" style="margin-top:10px;margin-bottom:10px;">
+    @using (Html.BeginForm("Search", "Orders"))
+            {
+        <div class="form-inline">
+            <div class="form-group">
+                <label>By User first or last name:</label>
+                <input type="text" class="form-control" name="txtName">
+            </div>
 
+            <div class="form-group">
+                <button type="submit" class="btn btn-warning" style="margin-top:25px;">Search</button>
+            </div>
+        </div>
+    }
+</div>
 <p>
-    <a asp-action="Create">Create New</a>
+    @Html.ActionLink("Create New", "Create")
 </p>
 <table class="table">
-    <thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.User.firstName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.orderDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.creditCardNum)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.amount)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.orderDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.creditCardNum)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.amount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.User)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.firstName)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.orderDate)
             </td>
@@ -40,14 +56,12 @@
                 @Html.DisplayFor(modelItem => item.amount)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.User.email)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.ID })
             </td>
         </tr>
-}
-    </tbody>
+    }
+
 </table>
+
