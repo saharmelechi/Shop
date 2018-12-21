@@ -1,10 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
+using System.Xml;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using ProductsStore.Models;
 
 namespace ProductsStore.Controllers
@@ -148,5 +153,186 @@ namespace ProductsStore.Controllers
         {
             return _context.Product.Any(e => e.ID == id);
         }
+
+        public ActionResult ProductDetails(int? id)
+        {
+            if (id == null)
+            {
+                return new BadRequestResult();
+            }
+            Product product = _context.Product.Find(id);
+            if (product == null)
+            {
+                return new NotFoundResult();
+            }
+            return View("ProductDetails", product);
+        }
+
+        public ActionResult AddToCart(int id)
+        {
+            if ((HttpContext.Session.GetInt32(Globals.CART_SESSION_KEY) ?? 0) != 0)
+            {
+                Cart cart = (Cart)HttpContext.Session.GetString(Globals.CART_SESSION_KEY);
+                Product p = _context.Product.Where(x => x.ID == id).FirstOrDefault();
+
+                cart.Products.Add(p);
+
+                cart.TotalAmount = 0;
+                for (int i = 0; i < cart.Products.Count(); i++)
+                {
+                    cart.TotalAmount += cart.Products[i].price;
+                }
+
+                HttpContext.Session.SetString(Globals.CART_SESSION_KEY, cart);
+
+                return View("Cart", cart);
+            }
+            return RedirectToAction("index", "Home");
+
+        }
+
+        public ActionResult Cart()
+        {
+            if (!String.IsNullOrEmpty(HttpContext.Session.GetString(Globals.CART_SESSION_KEY)))
+            {
+                Cart cart = (Cart)HttpContext.Session.GetString(Globals.CART_SESSION_KEY);
+
+                cart.TotalAmount = 0;
+                for (int i = 0; i < cart.Products.Count(); i++)
+                {
+                    cart.TotalAmount += cart.Products[i].price;
+                }
+
+                HttpContext.Session.SetString(Globals.CART_SESSION_KEY, cart);
+
+                return View("Cart", cart);
+            }
+            return RedirectToAction("index", "Home");
+
+        }
+
+        public ActionResult Checkout()
+        {
+            if (!String.IsNullOrEmpty(HttpContext.Session.GetString(Globals.CART_SESSION_KEY)))
+            {
+                Cart cart = (Cart)HttpContext.Session.GetString(Globals.CART_SESSION_KEY);
+
+                cart.TotalAmount = 0;
+                for (int i = 0; i < cart.Products.Count(); i++)
+                {
+                    cart.TotalAmount += cart.Products[i].price;
+                }
+
+                HttpContext.Session.SetString(Globals.CART_SESSION_KEY, cart);
+
+                Checkout ch = new Models.Checkout();
+                ch.TotalAmount = cart.TotalAmount;
+                return View("Checkout", ch);
+            }
+            return RedirectToAction("index", "Home");
+
+        }
+
+
+        private Cart GetCart()
+        {
+            if (!String.IsNullOrEmpty(HttpContext.Session.GetString(Globals.CART_SESSION_KEY)))
+            {
+                Cart cart = (Cart)HttpContext.Session.GetString(Globals.CART_SESSION_KEY);
+
+                cart.TotalAmount = 0;
+                for (int i = 0; i < cart.Products.Count(); i++)
+                {
+                    cart.TotalAmount += cart.Products[i].price;
+                }
+
+
+                return cart;
+            }
+
+            return null;
+        }
+        [HttpPost]
+        public ActionResult Checkout(Checkout ch)
+        {
+            if (!ValidateCardLength(ch.CreditCard))
+            {
+                ViewBag.IsError = true;
+                return View();
+            }
+
+            DateTime dt = new DateTime(ch.Year, ch.Month, 1);
+            if (dt < DateTime.Now)
+            {
+
+                ViewBag.CardExpiresError = true;
+                return View();
+            }
+
+            Cart c = GetCart();
+            Order o = new Order();
+            o.creditCardNum = ch.CreditCard;
+            o.amount = c.TotalAmount;
+            o.orderDate = DateTime.Now;
+            User u = _context.User.Where(x => x.ID == Globals.getConnectedUser(HttpContext.Session)).FirstOrDefault();
+            o.userID = u.ID;
+            Cart cart = (Cart)HttpContext.Session.GetString(Globals.CART_SESSION_KEY);
+            foreach (var item in cart.Products)
+            {
+                _context.Product.Attach(item);
+                _context.Entry(item).State = EntityState.Unchanged;
+            }
+
+            var po = new List<ProductOrders>();
+            foreach (var product in cart.Products)
+            {
+                po.Add(new ProductOrders(product.ID, o.ID));
+            }
+            o.Products = po;
+
+            _context.Order.Add(o);
+            _context.SaveChanges();
+
+            HttpContext.Session.SetString(Globals.CART_SESSION_KEY, new Cart());
+
+
+            return View("OrderSuccess");
+            //  return RedirectToAction("index", "Home");
+
+        }
+
+
+        private bool ValidateCardLength(string cardNum)
+        {
+            string completeUrl = "https://secure.ftipgw.com/ArgoFire/validate.asmx/ValidCardLength?cardnumber=" + cardNum;
+
+            // Create a request for the URL.         
+            WebRequest request = WebRequest.Create(completeUrl);
+
+            // If required by the server, set the credentials.
+            request.Credentials = CredentialCache.DefaultCredentials;
+
+            //Get the response.
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+
+            // Get the stream containing content returned by the server.
+            Stream dataStream = response.GetResponseStream();
+
+            // Open the stream using a StreamReader for easy access.
+            StreamReader reader = new StreamReader(dataStream);
+            // Read the content.
+            string responseFromServer = reader.ReadToEnd();
+
+            XmlDocument xm = new XmlDocument();
+            xm.LoadXml(responseFromServer);
+
+            // Cleanup the streams and the response.
+            reader.Close();
+            dataStream.Close();
+            response.Close();
+
+            return bool.Parse(xm.InnerText);
+        }
+
     }
 }

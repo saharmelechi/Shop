@@ -40,7 +40,7 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    @if (Context.Session.GetInt32("User") == 0)
+                    @if (!Globals.isUserConnected(Context.Session))
                     {
                         <li>@Html.ActionLink("Login", "Login", "Home")</li>
                         <li>@Html.ActionLink("Register", "Register", "Home")</li>
@@ -48,7 +48,7 @@
                     else
                     {
                         <li>@Html.ActionLink("Logout", "Logout", "Home")</li>
-                        if (Context.Session.GetInt32("Admin") ==1)
+                        if (Globals.isAdminConnected(Context.Session))
                         {
                             <li>@Html.ActionLink("Products", "Index", "Products")</li>
                             <li>@Html.ActionLink("Orders", "Index", "Orders")</li>

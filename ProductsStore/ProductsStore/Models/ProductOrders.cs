@@ -15,6 +15,10 @@ namespace ProductsStore.Models
 
         public Order _order { get; set; }
 
-
+        public ProductOrders(int productId, int orderId)
+        {
+            this.ProductId = productId;
+            this.OrderId = orderId;
+        }
     }
 }

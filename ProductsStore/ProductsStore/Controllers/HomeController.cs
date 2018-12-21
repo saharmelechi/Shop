@@ -14,11 +14,6 @@ namespace ProductsStore.Controllers
     {
         private readonly StoreContext _context;
 
-
-        public const string ADMIN_SESSION_KEY = "Admin";
-        public const string USER_SESSION_KEY = "User";
-        private const string CART_SESSION_KEY = "Cart";
-
         public HomeController(StoreContext context)
         {
             
@@ -28,8 +23,6 @@ namespace ProductsStore.Controllers
         public IActionResult Index()
         {
             HomeVm homeVm = new HomeVm();
-            HttpContext.Session.SetInt32(USER_SESSION_KEY, 0);
-            HttpContext.Session.SetInt32(ADMIN_SESSION_KEY, 0);
             homeVm.Products = _context.Product.ToList();
             return View(homeVm);
         }
@@ -65,6 +58,7 @@ namespace ProductsStore.Controllers
             List<int> users = new List<int>();
             //if (Session["User"] != null && Session["Admin"] == null)
             //TODO: Understand what the code do and fix it.
+            // This gives the user's most sells, will replaced with an AI algorithm
             if (false)
             {
                 User use = null;// (User)Session["User"];
@@ -140,8 +134,8 @@ namespace ProductsStore.Controllers
 
         public ActionResult Logout()
         {
-            HttpContext.Session.SetInt32(USER_SESSION_KEY, 0);
-            HttpContext.Session.SetInt32(ADMIN_SESSION_KEY, 0);
+            HttpContext.Session.SetInt32(Globals.USER_SESSION_KEY, 0);
+            HttpContext.Session.SetInt32(Globals.ADMIN_SESSION_KEY, 0);
             return View("Login");
         }
 
@@ -164,16 +158,16 @@ namespace ProductsStore.Controllers
                 // Check if the user is admin
                 if (userInfo.isAdmin)
                 {
-                    HttpContext.Session.SetInt32(ADMIN_SESSION_KEY, 1);
+                    HttpContext.Session.SetInt32(Globals.ADMIN_SESSION_KEY, 1);
                     string adm = JsonConvert.SerializeObject(new User());
-                    HttpContext.Session.SetString(USER_SESSION_KEY, adm);
+                    HttpContext.Session.SetString(Globals.USER_SESSION_KEY, adm);
                     return RedirectToAction("Index", "Products");
                 }
 
                 // Get regular user
-                HttpContext.Session.SetString(USER_SESSION_KEY, usr);
+                HttpContext.Session.SetString(Globals.USER_SESSION_KEY, usr);
                 var crt = JsonConvert.SerializeObject(new Cart());
-                HttpContext.Session.SetString(CART_SESSION_KEY, crt);
+                HttpContext.Session.SetString(Globals.CART_SESSION_KEY, crt);
                 return RedirectToAction("Index", "Home");
             }
             return new EmptyResult();

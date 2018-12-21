@@ -30,12 +30,12 @@ namespace ProductsStore.Controllers
         {
             if (id == null)
             {
-                return StatusCode(500);
+                return new BadRequestResult();
             }
             Order order = _context.Order.Find(id);
             if (order == null)
             {
-                return StatusCode(418);
+                return new NotFoundResult();
             }
             return View(order);
         }
@@ -70,12 +70,13 @@ namespace ProductsStore.Controllers
         {
             if (id == null)
             {
-                return StatusCode(500);
+                return new BadRequestResult();
             }
             Order order = _context.Order.Find(id);
             if (order == null)
             {
-                return StatusCode(418);
+                return new NotFoundResult();
+
             }
             ViewBag.userID = new SelectList(_context.User, "ID", "firstName", order.userID);
             return View(order);
@@ -103,12 +104,12 @@ namespace ProductsStore.Controllers
         {
             if (id == null)
             {
-                return StatusCode(500);
+                return new BadRequestResult();
             }
             Order order = _context.Order.Find(id);
             if (order == null)
             {
-                return StatusCode(418);
+                return new NotFoundResult();
             }
             return View(order);
         }
@@ -218,8 +219,6 @@ namespace ProductsStore.Controllers
         public ActionResult Search()
         {
             var name = Request.Form["txtname"];
-
-
             var orders = from p in _context.Order
                          select p;
             if (!String.IsNullOrEmpty(name))
@@ -227,9 +226,7 @@ namespace ProductsStore.Controllers
                 orders = orders.Where(s => s.User.firstName.Contains(name) || s.User.lastName.Contains(name));
             }
 
-
             return View("Index", orders);
-
         }
     }
 
