@@ -15,7 +15,6 @@
                         <label>By name:</label>
                         <input type="text" class="form-control" name="txtName">
                     </div>
-
                     <div class="form-group">
                         <button type="submit" class="btn btn-warning" style="margin-top:25px;">Search</button>
                     </div>
@@ -26,25 +25,26 @@
     }
 </div>
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create new", "Create", null, new { @class = " glyphicon glyphicon-plus btn btn-default" })
+    @*@Html.ActionLink("Create New", "Create")*@
 </p>
-<table class="table">
-    <tr>
-        <th>
+<table class="table table-responsive table-hover">
+    <tr style="background-color:orange;">
+        <th style="width:20%;">
             @Html.DisplayNameFor(model => model.name)
         </th>
-        <th>
+        <th style="width:20%;">
             @Html.DisplayNameFor(model => model.price)
         </th>
-        <th>
+        <th style="width:20%;">
             @Html.DisplayNameFor(model => model.description)
         </th>
-        <th>
+        <th style="width:20%;">
 
             @Html.DisplayNameFor(model => model.image)
         </th>
 
-        <th></th>
+        <th style="width:20%; text-align:center"> פעולות</th>
     </tr>
 
     @foreach (var item in Model)
@@ -65,9 +65,12 @@
             </td>
 
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
-                @Html.ActionLink("Details", "Details", new { id = item.ID }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+                @*@Html.ActionLink("Edit", "Edit", new { id = item.ID }) |*@
+                @Html.ActionLink("", "Edit", null, new { id = item.ID }, new { @class = " glyphicon glyphicon-pencil btn btn-default" })
+                @Html.ActionLink("", "Details", null, new { id = item.ID }, new { @class = " glyphicon glyphicon-list-alt btn btn-default" })
+                @Html.ActionLink("", "Delete", null, new { id = item.ID }, new { @class = " glyphicon glyphicon-trash btn btn-default" })
+                @*@Html.ActionLink("Details", "Details", new { id = item.ID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.ID })*@
             </td>
         </tr>
     }

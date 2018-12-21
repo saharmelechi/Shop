@@ -30,12 +30,12 @@ namespace ProductsStore.Controllers
         {
             if (id == null)
             {
-                return StatusCode(500); //Return status http error
+                return new BadRequestResult();
             }
             Address address = _context.Address.Find(id);
             if (address == null)
             {
-                return StatusCode(418); // Return any http that not found
+                return new NotFoundResult();
             }
             return View(address);
         }
@@ -68,12 +68,12 @@ namespace ProductsStore.Controllers
         {
             if (id == null)
             {
-                return StatusCode(500);
+                return new BadRequestResult();
             }
             Address address = _context.Address.Find(id);
             if (address == null)
             {
-                return StatusCode(418);
+                return new NotFoundResult();
             }
             return View(address);
         }
@@ -99,12 +99,12 @@ namespace ProductsStore.Controllers
         {
             if (id == null)
             {
-                return StatusCode(500); //Return status http error
+                return new BadRequestResult();
             }
             Address address = _context.Address.Find(id);
             if (address == null)
             {
-                return StatusCode(418); // Return any http that not found
+                return new NotFoundResult();
             }
             return View(address);
         }

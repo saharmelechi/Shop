@@ -138,7 +138,6 @@ namespace ProductsStore.Controllers
         [HttpPost]
         public ActionResult ApplyReport()
         {
-
             var result = from order in
                  (
                      from o in _context.Order
