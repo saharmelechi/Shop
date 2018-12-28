@@ -12,19 +12,19 @@ namespace ProductsStore
         public const string USER_SESSION_KEY = "User";
         public const string CART_SESSION_KEY = "Cart";
 
-        static public int getConnectedUser(ISession session) {
-            return (session.GetInt32(USER_SESSION_KEY) ?? 0);
+        static public string getConnectedUser(ISession session) {
+            return session.GetString(USER_SESSION_KEY);
         }
 
         static public bool isUserConnected(ISession session)
         {
-            return getConnectedUser(session) != 0;
+            return !String.IsNullOrEmpty(getConnectedUser(session));
         }
          
 
         static public bool isAdminConnected(ISession session)
         {
-            return session.GetInt32(ADMIN_SESSION_KEY) == 1;
+            return !String.IsNullOrEmpty(session.GetString(ADMIN_SESSION_KEY));
         }
     }
 }

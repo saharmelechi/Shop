@@ -20,8 +20,7 @@ namespace ProductsStore.Models
         [Display(Name = "credit Card Num")]
         [Required]
         public string creditCardNum { get; set; }
-        public Nullable<int> amount { get; set; }
-
+        [Display(Name ="Total price")]
         public virtual ICollection<ProductOrders> Products { get; set; }
         public virtual User User { get; set; }
     }

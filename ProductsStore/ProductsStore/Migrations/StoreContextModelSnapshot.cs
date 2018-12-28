@@ -27,7 +27,7 @@ namespace ProductsStore.Migrations
 
                     b.Property<string>("City");
 
-                    b.Property<string>("Number");
+                    b.Property<string>("CountOfProducts");
 
                     b.Property<string>("Street");
 
@@ -41,8 +41,6 @@ namespace ProductsStore.Migrations
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("amount");
 
                     b.Property<string>("creditCardNum")
                         .IsRequired();
@@ -86,13 +84,21 @@ namespace ProductsStore.Migrations
 
             modelBuilder.Entity("ProductsStore.Models.ProductOrders", b =>
                 {
-                    b.Property<int>("ProductId");
+                    b.Property<int>("poID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CountOfProducts");
 
                     b.Property<int>("OrderId");
 
-                    b.HasKey("ProductId", "OrderId");
+                    b.Property<int>("ProductId");
+
+                    b.HasKey("poID");
 
                     b.HasIndex("OrderId");
+
+                    b.HasIndex("ProductId");
 
                     b.ToTable("ProductOrders");
                 });

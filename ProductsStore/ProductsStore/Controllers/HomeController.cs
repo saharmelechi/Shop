@@ -76,7 +76,7 @@ namespace ProductsStore.Controllers
                 var c = (from product in result2
                          select new
                          {
-                             numberOfOrders = product.Orders.Count(),
+                             CountOfProductsOfOrders = product.Orders.Count(),
                              product = product
                          });
                 var list = c.ToList();
@@ -86,9 +86,9 @@ namespace ProductsStore.Controllers
                 int lastNum = 0;
                 foreach (var item in list)
                 {
-                    if (item.numberOfOrders > lastNum)
+                    if (item.CountOfProductsOfOrders > lastNum)
                     {
-                        lastNum = item.numberOfOrders;
+                        lastNum = item.CountOfProductsOfOrders;
                         p = item.product;
                     }
                 }
@@ -106,7 +106,7 @@ namespace ProductsStore.Controllers
                 var c = (from product in products
                          select new
                          {
-                             numberOfOrders = product.Orders.Count(),
+                             CountOfProductsOfOrders = product.Orders.Count(),
                              product = product
                          });
                 var list = c.ToList();
@@ -117,9 +117,9 @@ namespace ProductsStore.Controllers
                 p = list[0].product;
                 foreach (var item in list)
                 {
-                    if (item.numberOfOrders > lastNum)
+                    if (item.CountOfProductsOfOrders > lastNum)
                     {
-                        lastNum = item.numberOfOrders;
+                        lastNum = item.CountOfProductsOfOrders;
                         p = item.product;
                     }
                 }
@@ -134,8 +134,8 @@ namespace ProductsStore.Controllers
 
         public ActionResult Logout()
         {
-            HttpContext.Session.SetInt32(Globals.USER_SESSION_KEY, 0);
-            HttpContext.Session.SetInt32(Globals.ADMIN_SESSION_KEY, 0);
+            HttpContext.Session.SetString(Globals.USER_SESSION_KEY, "");
+            HttpContext.Session.SetString(Globals.ADMIN_SESSION_KEY, "");
             return View("Login");
         }
 
@@ -158,7 +158,7 @@ namespace ProductsStore.Controllers
                 // Check if the user is admin
                 if (userInfo.isAdmin)
                 {
-                    HttpContext.Session.SetInt32(Globals.ADMIN_SESSION_KEY, 1);
+                    HttpContext.Session.SetString(Globals.ADMIN_SESSION_KEY, true.ToString());
                     string adm = JsonConvert.SerializeObject(new User());
                     HttpContext.Session.SetString(Globals.USER_SESSION_KEY, adm);
                     return RedirectToAction("Index", "Products");
@@ -226,7 +226,7 @@ namespace ProductsStore.Controllers
             var a = (from product in _context.Product
                      select new
                      {
-                         numberOfOrders = product.Orders.Count(),
+                         CountOfProductsOfOrders = product.Orders.Count(),
                          product = product
                      });
             var list = a.ToList();
@@ -236,9 +236,9 @@ namespace ProductsStore.Controllers
             int lastNum = 0;
             foreach (var item in list)
             {
-                if (item.numberOfOrders > lastNum)
+                if (item.CountOfProductsOfOrders > lastNum)
                 {
-                    lastNum = item.numberOfOrders;
+                    lastNum = item.CountOfProductsOfOrders;
                     p = item.product;
                 }
             }

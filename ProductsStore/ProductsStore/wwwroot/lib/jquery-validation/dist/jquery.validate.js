@@ -366,7 +366,7 @@ $.extend( $.validator, {
 		url: "Please enter a valid URL.",
 		date: "Please enter a valid date.",
 		dateISO: "Please enter a valid date (ISO).",
-		number: "Please enter a valid number.",
+		CountOfProducts: "Please enter a valid CountOfProducts.",
 		digits: "Please enter only digits.",
 		equalTo: "Please enter the same value again.",
 		maxlength: $.validator.format( "Please enter no more than {0} characters." ),
@@ -426,7 +426,7 @@ $.extend( $.validator, {
 
 			$( this.currentForm )
 				.on( "focusin.validate focusout.validate keyup.validate",
-					":text, [type='password'], [type='file'], select, textarea, [type='number'], [type='search'], " +
+					":text, [type='password'], [type='file'], select, textarea, [type='CountOfProducts'], [type='search'], " +
 					"[type='tel'], [type='url'], [type='email'], [type='datetime'], [type='date'], [type='month'], " +
 					"[type='week'], [type='time'], [type='datetime-local'], [type='range'], [type='color'], " +
 					"[type='radio'], [type='checkbox'], [contenteditable], [type='button']", delegate )
@@ -497,7 +497,7 @@ $.extend( $.validator, {
 					this.invalid[ checkElement.name ] = true;
 				}
 
-				if ( !this.numberOfInvalids() ) {
+				if ( !this.CountOfProductsOfInvalids() ) {
 
 					// Hide error containers on last error
 					this.toHide = this.toHide.add( this.containers );
@@ -569,7 +569,7 @@ $.extend( $.validator, {
 			}
 		},
 
-		numberOfInvalids: function() {
+		CountOfProductsOfInvalids: function() {
 			return this.objectLength( this.invalid );
 		},
 
@@ -698,7 +698,7 @@ $.extend( $.validator, {
 
 			if ( type === "radio" || type === "checkbox" ) {
 				return this.findByName( element.name ).filter( ":checked" ).val();
-			} else if ( type === "number" && typeof element.validity !== "undefined" ) {
+			} else if ( type === "CountOfProducts" && typeof element.validity !== "undefined" ) {
 				return element.validity.badInput ? "NaN" : $element.val();
 			}
 
@@ -1153,7 +1153,7 @@ $.extend( $.validator, {
 		url: { url: true },
 		date: { date: true },
 		dateISO: { dateISO: true },
-		number: { number: true },
+		CountOfProducts: { CountOfProducts: true },
 		digits: { digits: true },
 		creditcard: { creditcard: true }
 	},
@@ -1182,10 +1182,10 @@ $.extend( $.validator, {
 
 	normalizeAttributeRule: function( rules, type, method, value ) {
 
-		// Convert the value to a number for number inputs, and for text for backwards compability
+		// Convert the value to a CountOfProducts for CountOfProducts inputs, and for text for backwards compability
 		// allows type="date" and others to be compared as strings
-		if ( /min|max|step/.test( method ) && ( type === null || /number|range|text/.test( type ) ) ) {
-			value = Number( value );
+		if ( /min|max|step/.test( method ) && ( type === null || /CountOfProducts|range|text/.test( type ) ) ) {
+			value = CountOfProducts( value );
 
 			// Support Opera Mini, which returns NaN for undefined minlength
 			if ( isNaN( value ) ) {
@@ -1295,20 +1295,20 @@ $.extend( $.validator, {
 			rules[ rule ] = $.isFunction( parameter ) && rule !== "normalizer" ? parameter( element ) : parameter;
 		} );
 
-		// Clean number parameters
+		// Clean CountOfProducts parameters
 		$.each( [ "minlength", "maxlength" ], function() {
 			if ( rules[ this ] ) {
-				rules[ this ] = Number( rules[ this ] );
+				rules[ this ] = CountOfProducts( rules[ this ] );
 			}
 		} );
 		$.each( [ "rangelength", "range" ], function() {
 			var parts;
 			if ( rules[ this ] ) {
 				if ( $.isArray( rules[ this ] ) ) {
-					rules[ this ] = [ Number( rules[ this ][ 0 ] ), Number( rules[ this ][ 1 ] ) ];
+					rules[ this ] = [ CountOfProducts( rules[ this ][ 0 ] ), CountOfProducts( rules[ this ][ 1 ] ) ];
 				} else if ( typeof rules[ this ] === "string" ) {
 					parts = rules[ this ].replace( /[\[\]]/g, "" ).split( /[\s,]+/ );
-					rules[ this ] = [ Number( parts[ 0 ] ), Number( parts[ 1 ] ) ];
+					rules[ this ] = [ CountOfProducts( parts[ 0 ] ), CountOfProducts( parts[ 1 ] ) ];
 				}
 			}
 		} );
@@ -1404,8 +1404,8 @@ $.extend( $.validator, {
 			return this.optional( element ) || /^\d{4}[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])$/.test( value );
 		},
 
-		// https://jqueryvalidation.org/number-method/
-		number: function( value, element ) {
+		// https://jqueryvalidation.org/CountOfProducts-method/
+		CountOfProducts: function( value, element ) {
 			return this.optional( element ) || /^(?:-?\d+|-?\d{1,3}(?:,\d{3})+)?(?:\.\d+)?$/.test( value );
 		},
 
@@ -1451,7 +1451,7 @@ $.extend( $.validator, {
 		step: function( value, element, param ) {
 			var type = $( element ).attr( "type" ),
 				errorMessage = "Step attribute on input type " + type + " is not supported.",
-				supportedTypes = [ "text", "number", "range" ],
+				supportedTypes = [ "text", "CountOfProducts", "range" ],
 				re = new RegExp( "\\b" + type + "\\b" ),
 				notSupported = type && !re.test( supportedTypes.join() ),
 				decimalPlaces = function( num ) {
@@ -1460,7 +1460,7 @@ $.extend( $.validator, {
 						return 0;
 					}
 
-					// Number of digits right of decimal point.
+					// CountOfProducts of digits right of decimal point.
 					return match[ 1 ] ? match[ 1 ].length : 0;
 				},
 				toInt = function( num ) {
@@ -1469,7 +1469,7 @@ $.extend( $.validator, {
 				valid = true,
 				decimals;
 
-			// Works only for text, number and range input types
+			// Works only for text, CountOfProducts and range input types
 			//  find a way to support input types date, datetime, datetime-local, month, time and week
 			if ( notSupported ) {
 				throw new Error( errorMessage );

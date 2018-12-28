@@ -264,7 +264,6 @@ namespace ProductsStore.Controllers
             DateTime dt = new DateTime(ch.Year, ch.Month, 1);
             if (dt < DateTime.Now)
             {
-
                 ViewBag.CardExpiresError = true;
                 return View();
             }
@@ -272,32 +271,30 @@ namespace ProductsStore.Controllers
             Cart c = GetCart();
             Order o = new Order();
             o.creditCardNum = ch.CreditCard;
-            o.amount = c.TotalAmount;
             o.orderDate = DateTime.Now;
-            User u = _context.User.Where(x => x.ID == Globals.getConnectedUser(HttpContext.Session)).FirstOrDefault();
+            var id = ((User)Globals.getConnectedUser(HttpContext.Session)).ID;
+            User u = _context.User.Where(x => x.ID == id).FirstOrDefault();
             o.userID = u.ID;
+            _context.Order.Add(o);
             Cart cart = (Cart)HttpContext.Session.GetString(Globals.CART_SESSION_KEY);
             foreach (var item in cart.Products)
             {
-                _context.Product.Attach(item);
-                _context.Entry(item).State = EntityState.Unchanged;
+
+                var prd = _context.Product.Where(x => x.ID == item.ID).FirstOrDefault();
+                if (prd == null) continue;
+                ProductOrders po = new ProductOrders(prd.ID, o.ID, prd.count);
+                //o.Products.Add(po);
+
+                // Add the Prod as row in the DB
+                _context.ProductOrders.Add(po);
             }
 
-            var po = new List<ProductOrders>();
-            foreach (var product in cart.Products)
-            {
-                po.Add(new ProductOrders(product.ID, o.ID));
-            }
-            o.Products = po;
-
-            _context.Order.Add(o);
             _context.SaveChanges();
 
             HttpContext.Session.SetString(Globals.CART_SESSION_KEY, new Cart());
 
 
             return View("OrderSuccess");
-            //  return RedirectToAction("index", "Home");
 
         }
 
@@ -313,25 +310,33 @@ namespace ProductsStore.Controllers
             request.Credentials = CredentialCache.DefaultCredentials;
 
             //Get the response.
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            try
+            {
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                // Get the stream containing content returned by the server.
+                Stream dataStream = response.GetResponseStream();
 
-            // Get the stream containing content returned by the server.
-            Stream dataStream = response.GetResponseStream();
+                // Open the stream using a StreamReader for easy access.
+                StreamReader reader = new StreamReader(dataStream);
+                // Read the content.
+                string responseFromServer = reader.ReadToEnd();
 
-            // Open the stream using a StreamReader for easy access.
-            StreamReader reader = new StreamReader(dataStream);
-            // Read the content.
-            string responseFromServer = reader.ReadToEnd();
+                XmlDocument xm = new XmlDocument();
+                xm.LoadXml(responseFromServer);
 
-            XmlDocument xm = new XmlDocument();
-            xm.LoadXml(responseFromServer);
+                // Cleanup the streams and the response.
+                reader.Close();
+                dataStream.Close();
+                response.Close();
+                return bool.Parse(xm.InnerText);
 
-            // Cleanup the streams and the response.
-            reader.Close();
-            dataStream.Close();
-            response.Close();
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
 
-            return bool.Parse(xm.InnerText);
+            
         }
 
     }

@@ -87,10 +87,10 @@ $.validator.addMethod( "accept", function( value, element, param ) {
 
 $.validator.addMethod( "alphanumeric", function( value, element ) {
 	return this.optional( element ) || /^\w+$/i.test( value );
-}, "Letters, numbers, and underscores only please" );
+}, "Letters, CountOfProductss, and underscores only please" );
 
 /*
- * Dutch bank account numbers (not 'giro' numbers) have 9 digits
+ * Dutch bank account CountOfProductss (not 'giro' CountOfProductss) have 9 digits
  * and pass the '11 check'.
  * We accept the notation with spaces, as that is common.
  * acceptable: 123456789 or 12 34 56 789
@@ -114,13 +114,13 @@ $.validator.addMethod( "bankaccountNL", function( value, element ) {
 		sum = sum + factor * digit;
 	}
 	return sum % 11 === 0;
-}, "Please specify a valid bank account number" );
+}, "Please specify a valid bank account CountOfProducts" );
 
 $.validator.addMethod( "bankorgiroaccountNL", function( value, element ) {
 	return this.optional( element ) ||
 			( $.validator.methods.bankaccountNL.call( this, value, element ) ) ||
 			( $.validator.methods.giroaccountNL.call( this, value, element ) );
-}, "Please specify a valid bank or giro account number" );
+}, "Please specify a valid bank or giro account CountOfProducts" );
 
 /**
  * BIC is the business identifier code (ISO 9362). This BIC check is not a guarantee for authenticity.
@@ -153,7 +153,7 @@ $.validator.addMethod( "bic", function( value, element ) {
  *
  * T: 1 character. Kind of Organization Letter: [ABCDEFGHJKLMNPQRSUVW]
  * P: 2 characters. Province.
- * N: 5 characters. Secuencial Number within the province.
+ * N: 5 characters. Secuencial CountOfProducts within the province.
  * C: 1 character. Control Digit: [0-9A-J].
  *
  * [ T ]: Kind of Organizations. Possible values:
@@ -178,13 +178,13 @@ $.validator.addMethod( "bic", function( value, element ) {
  *   V. Agrarian Transformation
  *   W. Permanent establishments of non-resident in Spain
  *
- * [ C ]: Control Digit. It can be a number or a letter depending on T value:
+ * [ C ]: Control Digit. It can be a CountOfProducts or a letter depending on T value:
  * [ T ]  -->  [ C ]
  * ------    ----------
- *   A         Number
- *   B         Number
- *   E         Number
- *   H         Number
+ *   A         CountOfProducts
+ *   B         CountOfProducts
+ *   E         CountOfProducts
+ *   H         CountOfProducts
  *   K         Letter
  *   P         Letter
  *   Q         Letter
@@ -200,7 +200,7 @@ $.validator.addMethod( "cifES", function( value, element ) {
 
 	var cifRegEx = new RegExp( /^([ABCDEFGHJKLMNPQRSUVW])(\d{7})([0-9A-J])$/gi );
 	var letter  = value.substring( 0, 1 ), // [ T ]
-		number  = value.substring( 1, 8 ), // [ P ][ P ][ N ][ N ][ N ][ N ][ N ]
+		CountOfProducts  = value.substring( 1, 8 ), // [ P ][ P ][ N ][ N ][ N ][ N ][ N ]
 		control = value.substring( 8, 9 ), // [ C ]
 		all_sum = 0,
 		even_sum = 0,
@@ -218,8 +218,8 @@ $.validator.addMethod( "cifES", function( value, element ) {
 		return false;
 	}
 
-	for ( i = 0; i < number.length; i++ ) {
-		n = parseInt( number[ i ], 10 );
+	for ( i = 0; i < CountOfProducts.length; i++ ) {
+		n = parseInt( CountOfProducts[ i ], 10 );
 
 		// Odd positions
 		if ( isOdd( i ) ) {
@@ -254,11 +254,11 @@ $.validator.addMethod( "cifES", function( value, element ) {
 	// Can be either
 	return control === control_digit || control === control_letter;
 
-}, "Please specify a valid CIF number." );
+}, "Please specify a valid CIF CountOfProducts." );
 
 /*
- * Brazillian CPF number (Cadastrado de Pessoas Físicas) is the equivalent of a Brazilian tax registration number.
- * CPF numbers have 11 digits in total: 9 numbers followed by 2 check numbers that are being used for validation.
+ * Brazillian CPF CountOfProducts (Cadastrado de Pessoas Físicas) is the equivalent of a Brazilian tax registration CountOfProducts.
+ * CPF CountOfProductss have 11 digits in total: 9 CountOfProductss followed by 2 check CountOfProductss that are being used for validation.
  */
 $.validator.addMethod( "cpfBR", function( value ) {
 
@@ -300,12 +300,12 @@ $.validator.addMethod( "cpfBR", function( value ) {
 		return false;
 	}
 
-	// Step 1 - using first Check Number:
+	// Step 1 - using first Check CountOfProducts:
 	for ( i = 1; i <= 9; i++ ) {
 		sum = sum + parseInt( value.substring( i - 1, i ), 10 ) * ( 11 - i );
 	}
 
-	// If first Check Number (CN) is valid, move to Step 2 - using second Check Number:
+	// If first Check CountOfProducts (CN) is valid, move to Step 2 - using second Check CountOfProducts:
 	if ( checkResult( sum, firstCN ) ) {
 		sum = 0;
 		for ( i = 1; i <= 10; i++ ) {
@@ -315,7 +315,7 @@ $.validator.addMethod( "cpfBR", function( value ) {
 	}
 	return false;
 
-}, "Please specify a valid CPF number" );
+}, "Please specify a valid CPF CountOfProducts" );
 
 // https://jqueryvalidation.org/creditcard-method/
 // based on https://en.wikipedia.org/wiki/Luhn_algorithm
@@ -356,7 +356,7 @@ $.validator.addMethod( "creditcard", function( value, element ) {
 	}
 
 	return ( nCheck % 10 ) === 0;
-}, "Please enter a valid credit card number." );
+}, "Please enter a valid credit card CountOfProducts." );
 
 /* NOTICE: Modified version of Castle.Components.Validator.CreditCardValidator
  * Redistributed under the the Apache License 2.0 at http://www.apache.org/licenses/LICENSE-2.0
@@ -426,7 +426,7 @@ $.validator.addMethod( "creditcardtypes", function( value, element, param ) {
 		return true;
 	}
 	return false;
-}, "Please enter a valid credit card number." );
+}, "Please enter a valid credit card CountOfProducts." );
 
 /**
  * Validates currencies with any given symbols by @jameslouiz
@@ -525,14 +525,14 @@ $.validator.addMethod( "extension", function( value, element, param ) {
 }, $.validator.format( "Please enter a value with a valid extension." ) );
 
 /**
- * Dutch giro account numbers (not bank numbers) have max 7 digits
+ * Dutch giro account CountOfProductss (not bank CountOfProductss) have max 7 digits
  */
 $.validator.addMethod( "giroaccountNL", function( value, element ) {
 	return this.optional( element ) || /^[0-9]{1,7}$/.test( value );
-}, "Please specify a valid giro account number" );
+}, "Please specify a valid giro account CountOfProducts" );
 
 /**
- * IBAN is the international bank account number.
+ * IBAN is the international bank account CountOfProducts.
  * It has a country - specific format, that is checked here too
  *
  * Validation is case-insensitive. Please make sure to normalize input yourself.
@@ -556,7 +556,7 @@ $.validator.addMethod( "iban", function( value, element ) {
 	// It contains:
 	// country code ISO 3166-1 - two letters,
 	// two check digits,
-	// Basic Bank Account Number (BBAN) - up to 30 chars
+	// Basic Bank Account CountOfProducts (BBAN) - up to 30 chars
 	var minimalIBANlength = 5;
 	if ( iban.length < minimalIBANlength ) {
 		return false;
@@ -670,7 +670,7 @@ $.validator.addMethod( "iban", function( value, element ) {
 
 $.validator.addMethod( "integer", function( value, element ) {
 	return this.optional( element ) || /^-?\d+$/.test( value );
-}, "A positive or negative non-decimal number please" );
+}, "A positive or negative non-decimal CountOfProducts please" );
 
 $.validator.addMethod( "ipv4", function( value, element ) {
 	return this.optional( element ) || /^(25[0-5]|2[0-4]\d|[01]?\d\d?)\.(25[0-5]|2[0-4]\d|[01]?\d\d?)\.(25[0-5]|2[0-4]\d|[01]?\d\d?)\.(25[0-5]|2[0-4]\d|[01]?\d\d?)$/i.test( value );
@@ -690,32 +690,32 @@ $.validator.addMethod( "letterswithbasicpunc", function( value, element ) {
 
 $.validator.addMethod( "mobileNL", function( value, element ) {
 	return this.optional( element ) || /^((\+|00(\s|\s?\-\s?)?)31(\s|\s?\-\s?)?(\(0\)[\-\s]?)?|0)6((\s|\s?\-\s?)?[0-9]){8}$/.test( value );
-}, "Please specify a valid mobile number" );
+}, "Please specify a valid mobile CountOfProducts" );
 
 /* For UK phone functions, do the following server side processing:
  * Compare original input with this RegEx pattern:
  * ^\(?(?:(?:00\)?[\s\-]?\(?|\+)(44)\)?[\s\-]?\(?(?:0\)?[\s\-]?\(?)?|0)([1-9]\d{1,4}\)?[\s\d\-]+)$
  * Extract $1 and set $prefix to '+44<space>' if $1 is '44', otherwise set $prefix to '0'
- * Extract $2 and remove hyphens, spaces and parentheses. Phone number is combined $prefix and $2.
- * A number of very detailed GB telephone number RegEx patterns can also be found at:
- * http://www.aa-asterisk.org.uk/index.php/Regular_Expressions_for_Validating_and_Formatting_GB_Telephone_Numbers
+ * Extract $2 and remove hyphens, spaces and parentheses. Phone CountOfProducts is combined $prefix and $2.
+ * A CountOfProducts of very detailed GB telephone CountOfProducts RegEx patterns can also be found at:
+ * http://www.aa-asterisk.org.uk/index.php/Regular_Expressions_for_Validating_and_Formatting_GB_Telephone_CountOfProductss
  */
-$.validator.addMethod( "mobileUK", function( phone_number, element ) {
-	phone_number = phone_number.replace( /\(|\)|\s+|-/g, "" );
-	return this.optional( element ) || phone_number.length > 9 &&
-		phone_number.match( /^(?:(?:(?:00\s?|\+)44\s?|0)7(?:[1345789]\d{2}|624)\s?\d{3}\s?\d{3})$/ );
-}, "Please specify a valid mobile number" );
+$.validator.addMethod( "mobileUK", function( phone_CountOfProducts, element ) {
+	phone_CountOfProducts = phone_CountOfProducts.replace( /\(|\)|\s+|-/g, "" );
+	return this.optional( element ) || phone_CountOfProducts.length > 9 &&
+		phone_CountOfProducts.match( /^(?:(?:(?:00\s?|\+)44\s?|0)7(?:[1345789]\d{2}|624)\s?\d{3}\s?\d{3})$/ );
+}, "Please specify a valid mobile CountOfProducts" );
 
 $.validator.addMethod( "netmask", function( value, element ) {
     return this.optional( element ) || /^(254|252|248|240|224|192|128)\.0\.0\.0|255\.(254|252|248|240|224|192|128|0)\.0\.0|255\.255\.(254|252|248|240|224|192|128|0)\.0|255\.255\.255\.(254|252|248|240|224|192|128|0)/i.test( value );
 }, "Please enter a valid netmask." );
 
 /*
- * The NIE (Número de Identificación de Extranjero) is a Spanish tax identification number assigned by the Spanish
+ * The NIE (Número de Identificación de Extranjero) is a Spanish tax identification CountOfProducts assigned by the Spanish
  * authorities to any foreigner.
  *
  * The NIE is the equivalent of a Spaniards Número de Identificación Fiscal (NIF) which serves as a fiscal
- * identification number. The CIF number (Certificado de Identificación Fiscal) is equivalent to the NIF, but applies to
+ * identification CountOfProducts. The CIF CountOfProducts (Certificado de Identificación Fiscal) is equivalent to the NIF, but applies to
  * companies rather than individuals. The NIE consists of an 'X' or 'Y' followed by 7 or 8 digits then another letter.
  */
 $.validator.addMethod( "nieES", function( value, element ) {
@@ -728,7 +728,7 @@ $.validator.addMethod( "nieES", function( value, element ) {
 	var nieRegEx = new RegExp( /^[MXYZ]{1}[0-9]{7,8}[TRWAGMYFPDXBNJZSQVHLCKET]{1}$/gi );
 	var validChars = "TRWAGMYFPDXBNJZSQVHLCKET",
 		letter = value.substr( value.length - 1 ).toUpperCase(),
-		number;
+		CountOfProducts;
 
 	value = value.toString().toUpperCase();
 
@@ -737,18 +737,18 @@ $.validator.addMethod( "nieES", function( value, element ) {
 		return false;
 	}
 
-	// X means same number
-	// Y means number + 10000000
-	// Z means number + 20000000
+	// X means same CountOfProducts
+	// Y means CountOfProducts + 10000000
+	// Z means CountOfProducts + 20000000
 	value = value.replace( /^[X]/, "0" )
 		.replace( /^[Y]/, "1" )
 		.replace( /^[Z]/, "2" );
 
-	number = value.length === 9 ? value.substr( 0, 8 ) : value.substr( 0, 9 );
+	CountOfProducts = value.length === 9 ? value.substr( 0, 8 ) : value.substr( 0, 9 );
 
-	return validChars.charAt( parseInt( number, 10 ) % 23 ) === letter;
+	return validChars.charAt( parseInt( CountOfProducts, 10 ) % 23 ) === letter;
 
-}, "Please specify a valid NIE number." );
+}, "Please specify a valid NIE CountOfProducts." );
 
 /*
  * The Número de Identificación Fiscal ( NIF ) is the way tax identification used in Spain for individuals
@@ -779,7 +779,7 @@ $.validator.addMethod( "nifES", function( value, element ) {
 
 	return false;
 
-}, "Please specify a valid NIF number." );
+}, "Please specify a valid NIF CountOfProducts." );
 
 /*
  * Numer identyfikacji podatkowej ( NIP ) is the way tax identification used in Poland for companies
@@ -802,7 +802,7 @@ $.validator.addMethod( "nipPL", function( value ) {
 	var intControlNr = ( int2 === 10 ) ? 0 : int2;
 
 	return ( intControlNr === parseInt( value[ 9 ], 10 ) );
-}, "Please specify a valid NIP number." );
+}, "Please specify a valid NIP CountOfProducts." );
 
 $.validator.addMethod( "notEqualTo", function( value, element, param ) {
 	return this.optional( element ) || !$.validator.methods.equalTo.call( this, value, element, param );
@@ -836,48 +836,48 @@ $.validator.addMethod( "pattern", function( value, element, param ) {
 }, "Invalid format." );
 
 /**
- * Dutch phone numbers have 10 digits (or 11 and start with +31).
+ * Dutch phone CountOfProductss have 10 digits (or 11 and start with +31).
  */
 $.validator.addMethod( "phoneNL", function( value, element ) {
 	return this.optional( element ) || /^((\+|00(\s|\s?\-\s?)?)31(\s|\s?\-\s?)?(\(0\)[\-\s]?)?|0)[1-9]((\s|\s?\-\s?)?[0-9]){8}$/.test( value );
-}, "Please specify a valid phone number." );
+}, "Please specify a valid phone CountOfProducts." );
 
 /* For UK phone functions, do the following server side processing:
  * Compare original input with this RegEx pattern:
  * ^\(?(?:(?:00\)?[\s\-]?\(?|\+)(44)\)?[\s\-]?\(?(?:0\)?[\s\-]?\(?)?|0)([1-9]\d{1,4}\)?[\s\d\-]+)$
  * Extract $1 and set $prefix to '+44<space>' if $1 is '44', otherwise set $prefix to '0'
- * Extract $2 and remove hyphens, spaces and parentheses. Phone number is combined $prefix and $2.
- * A number of very detailed GB telephone number RegEx patterns can also be found at:
- * http://www.aa-asterisk.org.uk/index.php/Regular_Expressions_for_Validating_and_Formatting_GB_Telephone_Numbers
+ * Extract $2 and remove hyphens, spaces and parentheses. Phone CountOfProducts is combined $prefix and $2.
+ * A CountOfProducts of very detailed GB telephone CountOfProducts RegEx patterns can also be found at:
+ * http://www.aa-asterisk.org.uk/index.php/Regular_Expressions_for_Validating_and_Formatting_GB_Telephone_CountOfProductss
  */
 
-// Matches UK landline + mobile, accepting only 01-3 for landline or 07 for mobile to exclude many premium numbers
-$.validator.addMethod( "phonesUK", function( phone_number, element ) {
-	phone_number = phone_number.replace( /\(|\)|\s+|-/g, "" );
-	return this.optional( element ) || phone_number.length > 9 &&
-		phone_number.match( /^(?:(?:(?:00\s?|\+)44\s?|0)(?:1\d{8,9}|[23]\d{9}|7(?:[1345789]\d{8}|624\d{6})))$/ );
-}, "Please specify a valid uk phone number" );
+// Matches UK landline + mobile, accepting only 01-3 for landline or 07 for mobile to exclude many premium CountOfProductss
+$.validator.addMethod( "phonesUK", function( phone_CountOfProducts, element ) {
+	phone_CountOfProducts = phone_CountOfProducts.replace( /\(|\)|\s+|-/g, "" );
+	return this.optional( element ) || phone_CountOfProducts.length > 9 &&
+		phone_CountOfProducts.match( /^(?:(?:(?:00\s?|\+)44\s?|0)(?:1\d{8,9}|[23]\d{9}|7(?:[1345789]\d{8}|624\d{6})))$/ );
+}, "Please specify a valid uk phone CountOfProducts" );
 
 /* For UK phone functions, do the following server side processing:
  * Compare original input with this RegEx pattern:
  * ^\(?(?:(?:00\)?[\s\-]?\(?|\+)(44)\)?[\s\-]?\(?(?:0\)?[\s\-]?\(?)?|0)([1-9]\d{1,4}\)?[\s\d\-]+)$
  * Extract $1 and set $prefix to '+44<space>' if $1 is '44', otherwise set $prefix to '0'
- * Extract $2 and remove hyphens, spaces and parentheses. Phone number is combined $prefix and $2.
- * A number of very detailed GB telephone number RegEx patterns can also be found at:
- * http://www.aa-asterisk.org.uk/index.php/Regular_Expressions_for_Validating_and_Formatting_GB_Telephone_Numbers
+ * Extract $2 and remove hyphens, spaces and parentheses. Phone CountOfProducts is combined $prefix and $2.
+ * A CountOfProducts of very detailed GB telephone CountOfProducts RegEx patterns can also be found at:
+ * http://www.aa-asterisk.org.uk/index.php/Regular_Expressions_for_Validating_and_Formatting_GB_Telephone_CountOfProductss
  */
-$.validator.addMethod( "phoneUK", function( phone_number, element ) {
-	phone_number = phone_number.replace( /\(|\)|\s+|-/g, "" );
-	return this.optional( element ) || phone_number.length > 9 &&
-		phone_number.match( /^(?:(?:(?:00\s?|\+)44\s?)|(?:\(?0))(?:\d{2}\)?\s?\d{4}\s?\d{4}|\d{3}\)?\s?\d{3}\s?\d{3,4}|\d{4}\)?\s?(?:\d{5}|\d{3}\s?\d{3})|\d{5}\)?\s?\d{4,5})$/ );
-}, "Please specify a valid phone number" );
+$.validator.addMethod( "phoneUK", function( phone_CountOfProducts, element ) {
+	phone_CountOfProducts = phone_CountOfProducts.replace( /\(|\)|\s+|-/g, "" );
+	return this.optional( element ) || phone_CountOfProducts.length > 9 &&
+		phone_CountOfProducts.match( /^(?:(?:(?:00\s?|\+)44\s?)|(?:\(?0))(?:\d{2}\)?\s?\d{4}\s?\d{4}|\d{3}\)?\s?\d{3}\s?\d{3,4}|\d{4}\)?\s?(?:\d{5}|\d{3}\s?\d{3})|\d{5}\)?\s?\d{4,5})$/ );
+}, "Please specify a valid phone CountOfProducts" );
 
 /**
- * Matches US phone number format
+ * Matches US phone CountOfProducts format
  *
  * where the area code may not start with 1 and the prefix may not start with 1
  * allows '-' or ' ' as a separator and allows parens around area code
- * some people may want to put a '1' in front of their number
+ * some people may want to put a '1' in front of their CountOfProducts
  *
  * 1(212)-999-2345 or
  * 212 999 2344 or
@@ -888,11 +888,11 @@ $.validator.addMethod( "phoneUK", function( phone_number, element ) {
  * and not
  * 212 123 4567
  */
-$.validator.addMethod( "phoneUS", function( phone_number, element ) {
-	phone_number = phone_number.replace( /\s+/g, "" );
-	return this.optional( element ) || phone_number.length > 9 &&
-		phone_number.match( /^(\+?1-?)?(\([2-9]([02-9]\d|1[02-9])\)|[2-9]([02-9]\d|1[02-9]))-?[2-9]([02-9]\d|1[02-9])-?\d{4}$/ );
-}, "Please specify a valid phone number" );
+$.validator.addMethod( "phoneUS", function( phone_CountOfProducts, element ) {
+	phone_CountOfProducts = phone_CountOfProducts.replace( /\s+/g, "" );
+	return this.optional( element ) || phone_CountOfProducts.length > 9 &&
+		phone_CountOfProducts.match( /^(\+?1-?)?(\([2-9]([02-9]\d|1[02-9])\)|[2-9]([02-9]\d|1[02-9]))-?[2-9]([02-9]\d|1[02-9])-?\d{4}$/ );
+}, "Please specify a valid phone CountOfProducts" );
 
 /*
 * Valida CEPs do brasileiros:
@@ -942,15 +942,15 @@ $.validator.addMethod( "postcodeUK", function( value, element ) {
  *
  * The end result is that neither of these inputs:
  *
- *	<input class="productinfo" name="partnumber">
+ *	<input class="productinfo" name="partCountOfProducts">
  *	<input class="productinfo" name="description">
  *
  *	...will validate unless at least one of them is filled.
  *
- * partnumber:	{require_from_group: [1,".productinfo"]},
+ * partCountOfProducts:	{require_from_group: [1,".productinfo"]},
  * description: {require_from_group: [1,".productinfo"]}
  *
- * options[0]: number of fields that must be filled in the group
+ * options[0]: CountOfProducts of fields that must be filled in the group
  * options[1]: CSS selector that defines the group of conditionally required fields
  */
 $.validator.addMethod( "require_from_group", function( value, element, options ) {
@@ -981,18 +981,18 @@ $.validator.addMethod( "require_from_group", function( value, element, options )
  *
  * The end result, is that none of these inputs:
  *
- *	<input class="productinfo" name="partnumber">
+ *	<input class="productinfo" name="partCountOfProducts">
  *	<input class="productinfo" name="description">
  *	<input class="productinfo" name="color">
  *
  *	...will validate unless either at least two of them are filled,
  *	OR none of them are.
  *
- * partnumber:	{skip_or_fill_minimum: [2,".productinfo"]},
+ * partCountOfProducts:	{skip_or_fill_minimum: [2,".productinfo"]},
  * description: {skip_or_fill_minimum: [2,".productinfo"]},
  * color:		{skip_or_fill_minimum: [2,".productinfo"]}
  *
- * options[0]: number of fields that must be filled in the group
+ * options[0]: CountOfProducts of fields that must be filled in the group
  * options[1]: CSS selector that defines the group of conditionally required fields
  *
  */
@@ -1000,10 +1000,10 @@ $.validator.addMethod( "skip_or_fill_minimum", function( value, element, options
 	var $fields = $( options[ 1 ], element.form ),
 		$fieldsFirst = $fields.eq( 0 ),
 		validator = $fieldsFirst.data( "valid_skip" ) ? $fieldsFirst.data( "valid_skip" ) : $.extend( {}, this ),
-		numberFilled = $fields.filter( function() {
+		CountOfProductsFilled = $fields.filter( function() {
 			return validator.elementValue( this );
 		} ).length,
-		isValid = numberFilled === 0 || numberFilled >= options[ 0 ];
+		isValid = CountOfProductsFilled === 0 || CountOfProductsFilled >= options[ 0 ];
 
 	// Store the cloned validator for future validation
 	$fieldsFirst.data( "valid_skip", validator );
@@ -1093,12 +1093,12 @@ $.validator.addMethod( "url2", function( value, element ) {
 }, $.validator.messages.url );
 
 /**
- * Return true, if the value is a valid vehicle identification number (VIN).
+ * Return true, if the value is a valid vehicle identification CountOfProducts (VIN).
  *
  * Works with all kind of text inputs.
  *
  * @example <input type="text" size="20" name="VehicleID" class="{required:true,vinUS:true}" />
- * @desc Declares a required input element whose value must be a valid vehicle identification number.
+ * @desc Declares a required input element whose value must be a valid vehicle identification CountOfProducts.
  *
  * @name $.validator.methods.vinUS
  * @type Boolean
@@ -1145,7 +1145,7 @@ $.validator.addMethod( "vinUS", function( v ) {
 		return true;
 	}
 	return false;
-}, "The specified vehicle identification number (VIN) is invalid." );
+}, "The specified vehicle identification CountOfProducts (VIN) is invalid." );
 
 $.validator.addMethod( "zipcodeUS", function( value, element ) {
 	return this.optional( element ) || /^\d{5}(-\d{4})?$/.test( value );

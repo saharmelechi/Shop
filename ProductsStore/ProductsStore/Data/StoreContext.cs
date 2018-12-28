@@ -22,6 +22,8 @@ namespace ProductsStore.Models
 
         public DbSet<ProductsStore.Models.User> User { get; set; }
 
+        public DbSet<ProductsStore.Models.ProductOrders> ProductOrders { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -32,8 +34,7 @@ namespace ProductsStore.Models
             modelBuilder.Entity<Product>()
                 .HasKey(t => t.ID);
 
-            modelBuilder.Entity<ProductOrders>()
-                .HasKey(x => new { x.ProductId, x.OrderId });
+            modelBuilder.Entity<ProductOrders>().HasKey(x => x.poID);
 
             modelBuilder.Entity<ProductOrders>()
                 .HasOne(x => x._product)
@@ -44,14 +45,20 @@ namespace ProductsStore.Models
                 .HasOne(x => x._order)
                 .WithMany(e => e.Products)
                 .HasForeignKey(x => x.OrderId);
-
+                
             modelBuilder.Entity<Order>()
                 .HasOne(u => u.User)
                 .WithMany(o => o.Orders)
                 .HasForeignKey(u => u.userID);
 
             base.OnModelCreating(modelBuilder);
+
         }
+
+
+
+
+
 
 
 

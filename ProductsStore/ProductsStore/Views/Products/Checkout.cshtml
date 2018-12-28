@@ -6,13 +6,13 @@
 
 <h2>Checkout</h2>
 
-@if (ViewBag.IsError)
+@if ((ViewBag.IsError != null) && ViewBag.IsError)
 {
     <div class="alert alert-danger" role="alert">
-        <strong>Oh snap!</strong> Card Number is not Valid.
+        <strong>Oh snap!</strong> Card CountOfProducts is not Valid.
     </div>
 }
-@if (ViewBag.CardExpiresError)
+@if ((ViewBag.CardExpiresError != null) && ViewBag.CardExpiresError)
 {
     <div class="alert alert-danger" role="alert">
         <strong>Oh snap!</strong> This Card has already expired.
@@ -59,7 +59,7 @@
 <form name="sentMessage" id="contactForm" novalidate="">
     <div class="controls">
 
-        <asp:TextBox ID="txtCreditCardNumber" runat="server" CssClass="form-control"></asp:TextBox>
+        <asp:TextBox ID="txtCreditCardCountOfProducts" runat="server" CssClass="form-control"></asp:TextBox>
 
 
         

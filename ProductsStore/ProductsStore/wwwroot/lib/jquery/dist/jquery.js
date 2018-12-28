@@ -77,7 +77,7 @@ var isFunction = function isFunction( obj ) {
       // In some browsers, typeof returns "function" for HTML <object> elements
       // (i.e., `typeof document.createElement( "object" ) === "function"`).
       // We don't want to classify *any* DOM node as a function.
-      return typeof obj === "function" && typeof obj.nodeType !== "number";
+      return typeof obj === "function" && typeof obj.nodeType !== "CountOfProducts";
   };
 
 
@@ -475,7 +475,7 @@ if ( typeof Symbol === "function" ) {
 }
 
 // Populate the class2type map
-jQuery.each( "Boolean Number String Function Array Date RegExp Object Error Symbol".split( " " ),
+jQuery.each( "Boolean CountOfProducts String Function Array Date RegExp Object Error Symbol".split( " " ),
 function( i, name ) {
 	class2type[ "[object " + name + "]" ] = name.toLowerCase();
 } );
@@ -494,7 +494,7 @@ function isArrayLike( obj ) {
 	}
 
 	return type === "array" || length === 0 ||
-		typeof length === "number" && length > 0 && ( length - 1 ) in obj;
+		typeof length === "CountOfProducts" && length > 0 && ( length - 1 ) in obj;
 }
 var Sizzle =
 /*!
@@ -585,7 +585,7 @@ var i,
 		"*\\]",
 
 	pseudos = ":(" + identifier + ")(?:\\((" +
-		// To reduce the number of selectors needing tokenize in the preFilter, prefer arguments:
+		// To reduce the CountOfProducts of selectors needing tokenize in the preFilter, prefer arguments:
 		// 1. quoted (capture 3; capture 4 or capture 5)
 		"('((?:\\\\.|[^\\\\'])*)'|\"((?:\\\\.|[^\\\\\"])*)\")|" +
 		// 2. simple (capture 6)
@@ -660,7 +660,7 @@ var i,
 				return "\uFFFD";
 			}
 
-			// Control characters and (dependent upon position) numbers get escaped as code points
+			// Control characters and (dependent upon position) CountOfProductss get escaped as code points
 			return ch.slice( 0, -1 ) + "\\" + ch.charCodeAt( ch.length - 1 ).toString( 16 ) + " ";
 		}
 
@@ -913,7 +913,7 @@ function addHandle( attrs, handler ) {
  * Checks document order of two siblings
  * @param {Element} a
  * @param {Element} b
- * @returns {Number} Returns less than 0 if a precedes b, greater than 0 if a follows b
+ * @returns {CountOfProducts} Returns less than 0 if a precedes b, greater than 0 if a follows b
  */
 function siblingCheck( a, b ) {
 	var cur = b && a,
@@ -2486,7 +2486,7 @@ function matcherFromGroupMatchers( elementMatchers, setMatchers ) {
 
 			// Add elements passing elementMatchers directly to results
 			// Support: IE<9, Safari
-			// Tolerate NodeList properties (IE: "length"; Safari: <number>) matching elements by id
+			// Tolerate NodeList properties (IE: "length"; Safari: <CountOfProducts>) matching elements by id
 			for ( ; i !== len && (elem = elems[i]) != null; i++ ) {
 				if ( byElement && elem ) {
 					j = 0;
@@ -4183,7 +4183,7 @@ function getData( data ) {
 		return null;
 	}
 
-	// Only convert to a number if it doesn't change the string
+	// Only convert to a CountOfProducts if it doesn't change the string
 	if ( data === +data + "" ) {
 		return +data;
 	}
@@ -4519,10 +4519,10 @@ function adjustCSS( elem, prop, valueParts, tween ) {
 				return jQuery.css( elem, prop, "" );
 			},
 		initial = currentValue(),
-		unit = valueParts && valueParts[ 3 ] || ( jQuery.cssNumber[ prop ] ? "" : "px" ),
+		unit = valueParts && valueParts[ 3 ] || ( jQuery.cssCountOfProducts[ prop ] ? "" : "px" ),
 
 		// Starting value computation is required for potential unit mismatches
-		initialInUnit = ( jQuery.cssNumber[ prop ] || unit !== "px" && +initial ) &&
+		initialInUnit = ( jQuery.cssCountOfProducts[ prop ] || unit !== "px" && +initial ) &&
 			rcssNum.exec( jQuery.css( elem, prop ) );
 
 	if ( initialInUnit && initialInUnit[ 3 ] !== unit ) {
@@ -6269,7 +6269,7 @@ function finalPropName( name ) {
 	return ret;
 }
 
-function setPositiveNumber( elem, value, subtract ) {
+function setPositiveCountOfProducts( elem, value, subtract ) {
 
 	// Any relative (+/-) values have already been
 	// normalized at this point
@@ -6408,7 +6408,7 @@ jQuery.extend( {
 			get: function( elem, computed ) {
 				if ( computed ) {
 
-					// We should always get a number back from opacity
+					// We should always get a CountOfProducts back from opacity
 					var ret = curCSS( elem, "opacity" );
 					return ret === "" ? "1" : ret;
 				}
@@ -6417,7 +6417,7 @@ jQuery.extend( {
 	},
 
 	// Don't automatically add "px" to these possibly-unitless properties
-	cssNumber: {
+	cssCountOfProducts: {
 		"animationIterationCount": true,
 		"columnCount": true,
 		"fillOpacity": true,
@@ -6465,12 +6465,12 @@ jQuery.extend( {
 		if ( value !== undefined ) {
 			type = typeof value;
 
-			// Convert "+=" or "-=" to relative numbers (#7345)
+			// Convert "+=" or "-=" to relative CountOfProductss (#7345)
 			if ( type === "string" && ( ret = rcssNum.exec( value ) ) && ret[ 1 ] ) {
 				value = adjustCSS( elem, name, ret );
 
 				// Fixes bug #9237
-				type = "number";
+				type = "CountOfProducts";
 			}
 
 			// Make sure that null and NaN values aren't set (#7116)
@@ -6478,9 +6478,9 @@ jQuery.extend( {
 				return;
 			}
 
-			// If a number was passed in, add the unit (except for certain CSS properties)
-			if ( type === "number" ) {
-				value += ret && ret[ 3 ] || ( jQuery.cssNumber[ origName ] ? "" : "px" );
+			// If a CountOfProducts was passed in, add the unit (except for certain CSS properties)
+			if ( type === "CountOfProducts" ) {
+				value += ret && ret[ 3 ] || ( jQuery.cssCountOfProducts[ origName ] ? "" : "px" );
 			}
 
 			// background-* props affect original clone's values
@@ -6607,7 +6607,7 @@ jQuery.each( [ "height", "width" ], function( i, dimension ) {
 				value = jQuery.css( elem, dimension );
 			}
 
-			return setPositiveNumber( elem, value, subtract );
+			return setPositiveCountOfProducts( elem, value, subtract );
 		}
 	};
 } );
@@ -6636,7 +6636,7 @@ jQuery.each( {
 			var i = 0,
 				expanded = {},
 
-				// Assumes a single number if not a string
+				// Assumes a single CountOfProducts if not a string
 				parts = typeof value === "string" ? value.split( " " ) : [ value ];
 
 			for ( ; i < 4; i++ ) {
@@ -6649,7 +6649,7 @@ jQuery.each( {
 	};
 
 	if ( prefix !== "margin" ) {
-		jQuery.cssHooks[ prefix + suffix ].set = setPositiveNumber;
+		jQuery.cssHooks[ prefix + suffix ].set = setPositiveCountOfProducts;
 	}
 } );
 
@@ -6693,7 +6693,7 @@ Tween.prototype = {
 		this.options = options;
 		this.start = this.now = this.cur();
 		this.end = end;
-		this.unit = unit || ( jQuery.cssNumber[ prop ] ? "" : "px" );
+		this.unit = unit || ( jQuery.cssCountOfProducts[ prop ] ? "" : "px" );
 	},
 	cur: function() {
 		var hooks = Tween.propHooks[ this.prop ];
@@ -7244,7 +7244,7 @@ jQuery.speed = function( speed, easing, fn ) {
 		opt.duration = 0;
 
 	} else {
-		if ( typeof opt.duration !== "number" ) {
+		if ( typeof opt.duration !== "CountOfProducts" ) {
 			if ( opt.duration in jQuery.fx.speeds ) {
 				opt.duration = jQuery.fx.speeds[ opt.duration ];
 
@@ -7990,7 +7990,7 @@ jQuery.fn.extend( {
 					return ret.replace( rreturn, "" );
 				}
 
-				// Handle cases where value is null/undef or number
+				// Handle cases where value is null/undef or CountOfProducts
 				return ret == null ? "" : ret;
 			}
 
@@ -8012,11 +8012,11 @@ jQuery.fn.extend( {
 				val = value;
 			}
 
-			// Treat null/undefined as ""; convert numbers to string
+			// Treat null/undefined as ""; convert CountOfProductss to string
 			if ( val == null ) {
 				val = "";
 
-			} else if ( typeof val === "number" ) {
+			} else if ( typeof val === "CountOfProducts" ) {
 				val += "";
 
 			} else if ( Array.isArray( val ) ) {
@@ -8802,7 +8802,7 @@ function ajaxConvert( s, response, jqXHR, isSuccess ) {
 
 jQuery.extend( {
 
-	// Counter for holding the number of active queries
+	// Counter for holding the CountOfProducts of active queries
 	active: 0,
 
 	// Last-Modified header cache for next request
@@ -9534,7 +9534,7 @@ jQuery.ajaxTransport( function( options ) {
 								// Support: IE <=9 only
 								// On a manual native abort, IE9 throws
 								// errors on any property access that is not readyState
-								if ( typeof xhr.status !== "number" ) {
+								if ( typeof xhr.status !== "CountOfProducts" ) {
 									complete( 0, "error" );
 								} else {
 									complete(
@@ -10294,13 +10294,13 @@ jQuery.now = Date.now;
 jQuery.isNumeric = function( obj ) {
 
 	// As of jQuery 3.0, isNumeric is limited to
-	// strings and numbers (primitives or objects)
-	// that can be coerced to finite numbers (gh-2662)
+	// strings and CountOfProductss (primitives or objects)
+	// that can be coerced to finite CountOfProductss (gh-2662)
 	var type = jQuery.type( obj );
-	return ( type === "number" || type === "string" ) &&
+	return ( type === "CountOfProducts" || type === "string" ) &&
 
 		// parseFloat NaNs numeric-cast false positives ("")
-		// ...but misinterprets leading-number strings, particularly hex literals ("0x...")
+		// ...but misinterprets leading-CountOfProducts strings, particularly hex literals ("0x...")
 		// subtraction forces infinities to NaN
 		!isNaN( obj - parseFloat( obj ) );
 };

@@ -22,6 +22,14 @@ namespace ProductsStore.Controllers
         public ActionResult Index()
         {
             var orders = _context.Order.Include(o => o.User);
+            var p = _context.ProductOrders.Include(x => x.OrderId);
+
+            foreach (var item in orders)
+            {
+                var g =_context.ProductOrders.First(x => x.OrderId == item.ID);
+                _context.Product.Where(t => t.ID == g.ProductId);
+                // Extecd the orders into this
+            }
             return View(orders.ToList());
         }
 
@@ -124,6 +132,10 @@ namespace ProductsStore.Controllers
             _context.SaveChanges();
             return RedirectToAction("Index");
         }
+
+
+
+       
 
         public ActionResult Reports()
         {

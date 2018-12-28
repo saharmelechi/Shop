@@ -29,7 +29,7 @@ namespace ProductsStore.Migrations
 
                     b.Property<string>("City");
 
-                    b.Property<string>("Number");
+                    b.Property<string>("CountOfProducts");
 
                     b.Property<string>("Street");
 

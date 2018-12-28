@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -37,6 +38,15 @@ namespace ProductsStore.Models
        
 
         public virtual ICollection<Order> Orders { get; set; }
+
+        public static explicit operator User(string s)
+        {
+            return JsonConvert.DeserializeObject<User>(s);
+        }
+        public static implicit operator string(User user)
+        {
+            return JsonConvert.SerializeObject(user);
+        }
     }
 }
 

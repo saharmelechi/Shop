@@ -1,0 +1,36 @@
+﻿@model ProductsStore.Models.ProductOrders
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>ProductOrders</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model._product)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model._product.description)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model._order)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model._order.creditCardNum)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CountOfProducts)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CountOfProducts)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.poID">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

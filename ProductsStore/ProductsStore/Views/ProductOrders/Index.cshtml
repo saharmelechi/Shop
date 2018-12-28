@@ -1,0 +1,47 @@
+﻿@model IEnumerable<ProductsStore.Models.ProductOrders>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model._product)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model._order)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CountOfProducts)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item._product.description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item._order.creditCardNum)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CountOfProducts)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.poID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.poID">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.poID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -28,6 +29,8 @@ namespace ProductsStore.Models
         public string description { get; set; }
         [Required]
         public string image { get; set; }
+        [NotMapped]
+        public int count { get; set; }
 
         public virtual ICollection<ProductOrders> Orders { get; set; }
     }
