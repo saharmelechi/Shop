@@ -19,18 +19,20 @@ namespace ProductsStore.Controllers
         }
 
         // GET: Orders
-        public ActionResult Index()
+        public ActionResult Index(int page = 1)
         {
-            var orders = _context.Order.Include(o => o.User);
+            var orders = _context.Order.Include(o => o.User);//.Skip((page - 1) *10).Take(page *  10);
             var p = _context.ProductOrders.Include(x => x.OrderId);
-
+            List<ShowOrderView> lstOrderProduct = new List<ShowOrderView>();
             foreach (var item in orders)
             {
                 var g =_context.ProductOrders.First(x => x.OrderId == item.ID);
-                _context.Product.Where(t => t.ID == g.ProductId);
+                var lst = _context.Product.Where(t => t.ID == g.ProductId);
                 // Extecd the orders into this
+                var orderprods = new ShowOrderView(item, lst);
+                lstOrderProduct.Add(orderprods);
             }
-            return View(orders.ToList());
+            return View(lstOrderProduct.ToList()) ;
         }
 
         // GET: Orders/Details/5

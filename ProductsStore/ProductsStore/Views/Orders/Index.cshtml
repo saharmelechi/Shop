@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ProductsStore.Models.Order>
+﻿@model IEnumerable<ProductsStore.Models.ShowOrderView>
 
 @{
     ViewBag.Title = "Index";
@@ -26,26 +26,16 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.User.firstName)
+            @Html.DisplayNameFor(model => model._order.User.firstName)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.orderDate)
+            @Html.DisplayNameFor(model => model._order.orderDate)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.creditCardNum)
+            @Html.DisplayNameFor(model => model._order.creditCardNum)
         </th>
         <th>
-            @*  @Html.DisplayNameFor(model => model.amount)*@
-            <div class="dropdown">
-                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                    מוצרים
-                </button>
-                <div class="dropdown-menu">
-                    <a class="dropdown-item" href="#">Link 1</a>
-                    <a class="dropdown-item" href="#">Link 2</a>
-                    <a class="dropdown-item" href="#">Link 3</a>
-                </div>
-            </div>
+            Products Orders
         </th>
         <th></th>
     </tr>
@@ -54,24 +44,47 @@
     {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.User.firstName)
+                @Html.DisplayFor(modelItem => item._order.User.firstName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.orderDate)
+                @Html.DisplayFor(modelItem => item._order.orderDate)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.creditCardNum)
+                @Html.DisplayFor(modelItem => item._order.creditCardNum)
             </td>
             <td>
-                @*@Html.DisplayFor(modelItem => item.amount)*@
+                <div class="dropdown">
+            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                מוצרים
+            </button>
+            <div class="dropdown-menu">
+                @foreach (var product in item.products)
+                {
+                    <a class="dropdown-item" asp-controller="Products" asp-action="Details" asp-route-id="@product.ID">@product.name</a>
+
+                }
+            </div>
+        </div>
+ 
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
-                @Html.ActionLink("Details", "Details", new { id = item.ID }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+                @Html.ActionLink("Edit", "Edit", new { id = item._order.ID }) |
+                @Html.ActionLink("Details", "Details", new { id = item._order.ID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item._order.ID })
             </td>
         </tr>
     }
 
 </table>
 
+<div class="dropdown">
+    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+        Dropdown Example
+        <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu">
+        <li><a href="#">HTML</a></li>
+        <li><a href="#">CSS</a></li>
+        <li><a href="#">JavaScript</a></li>
+    </ul>
+</div>
