@@ -212,12 +212,14 @@ namespace ProductsStore.Controllers
                 var fPrice = int.Parse(txtToPrice);
                 products = products.Where(s => s.price < fPrice);
             }
+            return PartialView("productsV", products.ToList()); ;
 
-            HomeVm homeVm = new HomeVm();
-            homeVm.Products = products.ToList();
+            // We don't need it since we changed to ajax
+            //HomeVm homeVm = new HomeVm();
+            //homeVm.Products = products.ToList();
 
-            homeVm.TopSale = getMostSale();
-            return View("Index", homeVm);
+            //homeVm.TopSale = getMostSale();
+            //return View("Index", homeVm);
 
         }
 

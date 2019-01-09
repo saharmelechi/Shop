@@ -9,7 +9,7 @@
     <div class="well well-sm">
         <strong>All Products</strong>
         <div class="" style="margin-top: 10px; margin-bottom: 10px;">
-            @using (Html.BeginForm("Search", "Home"))
+            @using (Html.BeginForm("Search", "Home", FormMethod.Post, new { id = "formSearch" }))
             {
                 <div class="form-inline">
                     <div class="form-group">
@@ -41,40 +41,7 @@
     </div>
 
     <div id="categories-list" class="row list-group">
-        @foreach (var item in Model.Products)
-        {
-            <div class="item  col-xs-4 col-lg-3 hvr-float-shadow">
-                <div class="thumbnail">
-                    <div class="group list-group-image product-img" style="background-image: url('@Html.DisplayFor(modelItem => item.image)')"></div>
-                    <div class="caption">
-                        <h4 class="group inner list-group-item-heading">
-                            <label>Name:</label>
-                            @Html.DisplayFor(modelItem => item.name)
-                        </h4>
-                        <p class="group inner list-group-item-text">
-                            <label>Description:</label>@Html.DisplayFor(modelItem => item.description)
-                        </p>
-                        <p class="group inner list-group-item-text">
-                            <label>Price:</label>$@Html.DisplayFor(modelItem => item.price)
-                        </p>
-                        <div class="row">
-                            @*<div class="col-xs-12">
-                                    <label>Price:</label><p class="lead">
-                                        $@Html.DisplayFor(modelItem => item.price)
-                                    </p>
-                                </div>
-                            *@
-                            <div class="col-xs-12">
-                                @Html.ActionLink("Add to cart", "ProductDetails", "Products", new { id = item.ID }, new { @class = "btn btn-primary form-control hvr-pulse" })
-                                @*<a class="btn btn-success" href="/somecontroller/someaction/123">Add to cart</>*@
-                            </div>
-
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-        }
+        @Html.Partial("productsV", Model.Products)
 
 
     </div>
@@ -111,6 +78,7 @@
             $('#list').click(function (event) { event.preventDefault(); $('#categories-list .item').addClass('list-group-item'); });
             $('#grid').click(function (event) { event.preventDefault(); $('#categories-list .item').removeClass('list-group-item'); $('#categories-list .item').addClass('grid-group-item'); });
 
+            // Initiate top sales section
             $.ajax({
                 url: "/Home/GetTopSaleProduct",
                 type: "POST",
@@ -128,7 +96,34 @@
 
                 }
             });
+
+            // On click call keyup and don't refresh the page
+            $("#formSearch").click(function (e) {
+                e.preventDefault();
+                $("#formSearch").keyup();
+
+            });
+
+            // Key up search the products
+            $("#formSearch").keyup(function (e) {
+
+
+                var form = $(this);
+                var url = form.attr('action');
+
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: form.serialize(), // serializes the form's elements.
+                    success: function (data) {
+                        $("#categories-list").html(data);
+                    }
+                });
+
+                e.preventDefault(); // avoid to execute the actual submit of the form.
+            });
         });
+
     </script>
 }
 @section Styles {
