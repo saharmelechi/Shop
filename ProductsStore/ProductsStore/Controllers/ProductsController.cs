@@ -175,12 +175,24 @@ namespace ProductsStore.Controllers
                 Cart cart = (Cart)HttpContext.Session.GetString(Globals.CART_SESSION_KEY);
                 Product p = _context.Product.Where(x => x.ID == id).FirstOrDefault();
 
-                cart.Products.Add(p);
+                // If we already have this item, just stack it
+                Product exist = cart.Products.FirstOrDefault(x => x.ID == p.ID);
+                if (exist != null)
+                {
+                    exist.count++;
+                }
+                else
+                {
+                    p.count = 1;
+                    cart.Products.Add(p);
+
+                }
+
 
                 cart.TotalAmount = 0;
                 for (int i = 0; i < cart.Products.Count(); i++)
                 {
-                    cart.TotalAmount += cart.Products[i].price;
+                    cart.TotalAmount += (cart.Products[i].price * cart.Products[i].count);
                 }
 
                 HttpContext.Session.SetString(Globals.CART_SESSION_KEY, cart);
@@ -200,7 +212,7 @@ namespace ProductsStore.Controllers
                 cart.TotalAmount = 0;
                 for (int i = 0; i < cart.Products.Count(); i++)
                 {
-                    cart.TotalAmount += cart.Products[i].price;
+                    cart.TotalAmount += (cart.Products[i].price * cart.Products[i].count);
                 }
 
                 HttpContext.Session.SetString(Globals.CART_SESSION_KEY, cart);
@@ -276,16 +288,14 @@ namespace ProductsStore.Controllers
             User u = _context.User.Where(x => x.ID == id).FirstOrDefault();
             o.userID = u.ID;
             o.User = new User();
-            o.User = u;
             _context.Order.Add(o);
             Cart cart = (Cart)HttpContext.Session.GetString(Globals.CART_SESSION_KEY);
             foreach (var item in cart.Products)
             {
-
                 var prd = _context.Product.Where(x => x.ID == item.ID).FirstOrDefault();
                 if (prd == null) continue;
+
                 ProductOrders po = new ProductOrders(prd.ID, o.ID, prd.count);
-                //o.Products.Add(po);
 
                 // Add the Prod as row in the DB
                 _context.ProductOrders.Add(po);

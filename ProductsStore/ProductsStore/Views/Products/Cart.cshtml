@@ -48,7 +48,7 @@
                                 <div class="col-xs-6 text-right">
                                     <h6>
                                         <strong>
-                                           $@Html.DisplayFor(modelItem => item.price)
+                                            $@Html.DisplayFor(modelItem => item.price) * @Html.DisplayFor(modelItem => item.count)
                                         </strong>
                                     </h6>
                                 </div>
