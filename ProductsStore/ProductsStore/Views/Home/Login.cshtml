@@ -87,7 +87,7 @@
             <div class="account-wall">
                 <img class="profile-img" src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=120"
                      alt="">
-                @using (Html.BeginForm("Login", "Home", FormMethod.Post))
+                @using (Html.BeginForm("Login", "Home", FormMethod.Post, new { id = "formLogin" }))
                 {
                     <div class="form-signin">
                         @Html.EditorFor(model => model.email, new { htmlAttributes = new { @class = "form-control" } })
@@ -95,15 +95,46 @@
                         <button class="btn btn-lg btn-primary btn-block" type="submit">
                             Sign in
                         </button>
-                        <label class="checkbox pull-left">
+                        @*<label class="checkbox pull-left">
                             <input type="checkbox" value="remember-me">
                             Remember me
-                        </label>
-                        <a href="#" class="pull-right need-help">Need help? </a><span class="clearfix"></span>
+                        </label>*@
+                        <a href="mailto:help@alphateam.com?Subject=Login%20problem" class="pull-right need-help">Need help? </a><span class="clearfix"></span>
                     </div>
                 }
             </div>
-            <a href="#" class="text-center new-account">Create an account </a>
+            <a asp-area="" asp-controller="Home" asp-action="Register" class="text-center new-account">Create an account </a>
         </div>
     </div>
 </div>
+
+@section Scripts {
+
+    <script>
+        $(document).ready(function () {
+
+            // Key up search the products
+            $("#formLogin").submit(function (e) {
+
+
+                var form = $(this);
+                var url = form.attr('action');
+
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: form.serialize(), // serializes the form's elements.
+                    success: function (data) {
+                            window.location= '/';
+                    },
+                    error: function (data) {
+                        alert(data.responseText);
+                    },
+                });
+
+                e.preventDefault(); // avoid to execute the actual submit of the form.
+            });
+        });
+
+    </script>
+}

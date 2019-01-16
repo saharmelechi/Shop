@@ -60,7 +60,9 @@
             <div class="dropdown-menu">
                 @foreach (var product in item.products)
                 {
-                    <a class="dropdown-item" asp-controller="Products" asp-action="Details" asp-route-id="@product.ID">@product.name</a>
+                    <p>
+                        <a class="dropdown-item" asp-controller="Products" asp-action="Details" asp-route-id="@product.ID">@product.name</a>
+                    </p>
 
                 }
             </div>

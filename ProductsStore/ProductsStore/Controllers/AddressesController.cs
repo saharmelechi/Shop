@@ -51,7 +51,7 @@ namespace ProductsStore.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind("ID,City,Street,CountOfProducts")] Address address)
+        public ActionResult Create([Bind("ID,City,Street,Number")] Address address)
         {
             if (ModelState.IsValid)
             {

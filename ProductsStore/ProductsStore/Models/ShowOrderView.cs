@@ -7,7 +7,7 @@ namespace ProductsStore.Models
 {
     public class ShowOrderView
     {
-        public ShowOrderView(Order item, IQueryable<Product> lst)
+        public ShowOrderView(Order item, IEnumerable<Product> lst)
         {
             this._order = item;
             this.products = lst;

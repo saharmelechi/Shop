@@ -27,11 +27,11 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.CountOfProducts)
+            @Html.DisplayNameFor(model => model.Number)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.CountOfProducts)
+            @Html.DisplayFor(model => model.Number)
         </dd>
 
     </dl>
@@ -40,3 +40,107 @@
     @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
+
+<div id="map"></div>
+
+<address>
+    <span id="street"></span><br />
+    <span id="city"></span><br />
+    <abbr title="Phone">P:0547744554</abbr>
+    <br />
+</address>
+
+@section Styles  {
+    <style>
+        #map {
+            height: 400px;
+            width: 100%;
+        }
+    </style>
+}
+@section Scripts {
+    <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyBHzTT4kjY8Rnl5pLF-MPb0VefwnrBI2dE"></script>
+
+    <script>
+        $.ajax({
+            url: "/Home/GetAddress",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: {},
+            success: function (data, textStatus, jqXHR) {
+
+
+                $('#street').text(data.Street + " " + data.Number);
+                $('#city').text(data.City);
+
+                var geocoder;
+                var map;
+                var address = data.City + " " + data.Street + " " + data.Number;
+
+
+                function initialize() {
+                    geocoder = new google.maps.Geocoder();
+                    var latlng = new google.maps.LatLng(32.091, 34.838);
+                    var myOptions = {
+                        zoom: 8,
+                        center: latlng,
+                        mapTypeControl: true,
+                        mapTypeControlOptions: { style: google.maps.MapTypeControlStyle.DROPDOWN_MENU },
+                        navigationControl: true,
+                        mapTypeId: google.maps.MapTypeId.ROADMAP
+                    };
+                    map = new google.maps.Map(document.getElementById("map"), myOptions);
+                    if (geocoder) {
+                        geocoder.geocode({ 'address': address }, function (results, status) {
+                            if (status == google.maps.GeocoderStatus.OK) {
+                                if (status != google.maps.GeocoderStatus.ZERO_RESULTS) {
+                                    map.setCenter(results[0].geometry.location);
+
+                                    var infowindow = new google.maps.InfoWindow(
+                                        {
+                                            content: '<b>' + address + '</b>',
+                                            size: new google.maps.Size(150, 50)
+                                        });
+
+                                    var marker = new google.maps.Marker({
+                                        position: results[0].geometry.location,
+                                        map: map,
+                                        title: address
+                                    });
+                                    google.maps.event.addListener(marker, 'click', function () {
+                                        infowindow.open(map, marker);
+                                    });
+
+                                } else {
+                                    alert("No results found");
+                                }
+                            } else {
+                                alert("Geocode was not successful for the following reason: " + status);
+                            }
+                        });
+                    }
+                }
+                initialize();
+
+                //initMap();
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+
+            }
+        });
+        function initMap() {
+
+            var uluru = { lat: 32.091, lng: 34.838 }
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 4,
+                center: uluru
+            });
+            var marker = new google.maps.Marker({
+                position: uluru,
+                map: map
+            });
+        }
+
+    </script>
+}

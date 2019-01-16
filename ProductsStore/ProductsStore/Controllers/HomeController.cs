@@ -161,16 +161,17 @@ namespace ProductsStore.Controllers
                     HttpContext.Session.SetString(Globals.ADMIN_SESSION_KEY, true.ToString());
                     string adm = JsonConvert.SerializeObject(new User());
                     HttpContext.Session.SetString(Globals.USER_SESSION_KEY, adm);
-                    return RedirectToAction("Index", "Products");
+                    return new OkResult();
                 }
 
                 // Get regular user
                 HttpContext.Session.SetString(Globals.USER_SESSION_KEY, usr);
                 var crt = JsonConvert.SerializeObject(new Cart());
                 HttpContext.Session.SetString(Globals.CART_SESSION_KEY, crt);
-                return RedirectToAction("Index", "Home");
+                return new OkResult();
+
             }
-            return new EmptyResult();
+            return new NotFoundObjectResult("Username or password is invalid");
         }
 
         [HttpPost]
@@ -246,6 +247,15 @@ namespace ProductsStore.Controllers
             }
 
             return p;
+        }
+
+        [HttpPost]
+        public JsonResult GetAddress()
+        {
+
+            var address = _context.Address.ToArray()[0];
+
+            return Json(address);
         }
     }
 }

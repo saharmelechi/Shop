@@ -292,10 +292,11 @@ namespace ProductsStore.Controllers
             Cart cart = (Cart)HttpContext.Session.GetString(Globals.CART_SESSION_KEY);
             foreach (var item in cart.Products)
             {
+                // Check if the product exist
                 var prd = _context.Product.Where(x => x.ID == item.ID).FirstOrDefault();
                 if (prd == null) continue;
 
-                ProductOrders po = new ProductOrders(prd.ID, o.ID, prd.count);
+                ProductOrders po = new ProductOrders(prd.ID, o.ID, item.count);
 
                 // Add the Prod as row in the DB
                 _context.ProductOrders.Add(po);

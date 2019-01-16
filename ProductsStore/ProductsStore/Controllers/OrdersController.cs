@@ -26,8 +26,13 @@ namespace ProductsStore.Controllers
             List<ShowOrderView> lstOrderProduct = new List<ShowOrderView>();
             foreach (var item in orders)
             {
-                var g =_context.ProductOrders.First(x => x.OrderId == item.ID);
-                var lst = _context.Product.Where(t => t.ID == g.ProductId);
+                var orderProducts =_context.ProductOrders.Where(x => x.OrderId == item.ID);
+                var lst = new List<Product>();
+                foreach (var singleProd in orderProducts)
+                {
+                    lst.Add(_context.Product.First(t => t.ID == singleProd.ProductId));
+
+                }
                 // Extecd the orders into this
                 var orderprods = new ShowOrderView(item, lst);
                 lstOrderProduct.Add(orderprods);

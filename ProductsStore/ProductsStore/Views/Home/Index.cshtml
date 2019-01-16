@@ -4,7 +4,7 @@
 }
 
 
-<div class="container">
+<div class="container-fluid">
 
     <div class="well well-sm">
         <strong>All Products</strong>
@@ -47,7 +47,7 @@
     </div>
     <hr />
     <h3 class="page-header">We thought this product was right for you:</h3>
-    <div style="width: 300px; margin: 0 auto;">
+    <div style="width: 20%;">
         <div class="thumbnail">
             <div class="group list-group-image product-img" id="msImage"></div>
             <div class="caption">
@@ -64,7 +64,7 @@
             </div>
         </div>
     </div>
-    <div id="slikCaroucel" style="width: 80%; margin: 0 auto">
+    <div id="slikCaroucel">
         @foreach (var item in Model.Products)
         {
             <img src="@Html.DisplayFor(modelItem => item.image)" />
