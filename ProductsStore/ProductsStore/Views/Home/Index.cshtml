@@ -4,7 +4,7 @@
 }
 
 
-<div class="container-fluid">
+<div class="container-fluid" style="font-family:Arial">
 
     <div class="well well-sm">
         <strong>All Products</strong>
@@ -18,23 +18,23 @@
                     </div>
                     <div class="form-group">
                         <label for="pwd">minimum Price:</label>
-                        <input type="CountOfProducts" class="form-control" name="txtFromPrice" placeholder="From">
+                        <input type="number" class="form-control" name="txtFromPrice" placeholder="From">
                     </div>
                     <div class="form-group">
                         <label for="pwd">MAX Price:</label>
-                        <input type="CountOfProducts" class="form-control" name="txtToPrice" placeholder="From">
+                        <input type="number" class="form-control" name="txtToPrice" placeholder="From">
                     </div>
                     <div class="form-group">
 
-                        <button type="submit" class="btn btn-warning" style="margin-top: auto;">Search</button>
+                        <button type="submit" class="btn btn-striped" style="background-color:#bdeec4;">Search</button>
                     </div>
                 </div>
             }
         </div>
         <div class="btn-group">
-            <a href="#" id="list" class="btn btn-default btn-sm">
+            <a href="#" id="list" class="btn btn-primary">
                 <span class="glyphicon glyphicon-th-list"></span>List
-            </a><a href="#" id="grid" class="btn btn-default btn-sm">
+            </a><a href="#" id="grid" class="btn btn-primary">
                 <span class="glyphicon glyphicon-th"></span>Grid
             </a>
         </div>
@@ -64,12 +64,12 @@
             </div>
         </div>
     </div>
-    <div id="slikCaroucel">
+    @*<div id="slikCaroucel">
         @foreach (var item in Model.Products)
         {
-            <img src="@Html.DisplayFor(modelItem => item.image)" />
+            <img src="@Html.DisplayFor(modelItem => item.image)" style="width:50%;height:200px;" />
         }
-    </div>
+    </div>*@
 </div>
 @section Scripts {
 

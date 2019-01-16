@@ -4,14 +4,14 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>Index</h2>
+<h2 style="color:#245980"><b>Users Of The Store</b></h2>
 
-<p>
-    <a asp-action="Create">Create New</a>
+<p style="margin-top:40px;margin-bottom:20px;">
+    @Html.ActionLink(" ", "Create", null, null, new { @class = "glyphicon glyphicon-plus btn btn-primary", @title = "Add User" })
 </p>
-<table class="table">
+<table class="table table-hover table-striped">
     <thead>
-        <tr>
+        <tr style="background-color:#84acc9;">
             <th>
                 @Html.DisplayNameFor(model => model.firstName)
             </th>
@@ -49,9 +49,9 @@
                 @Html.DisplayFor(modelItem => item.birthDate)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                @Html.ActionLink("", "Edit", null, new { id = item.ID }, new { @class = " glyphicon glyphicon-pencil btn btn-default", @title = "Edit User" })
+                @Html.ActionLink("", "Details", null, new { id = item.ID }, new { @class = " glyphicon glyphicon-list-alt btn btn-default", @title = "Details Of The User" })
+                @Html.ActionLink("", "Delete", null, new { id = item.ID }, new { @class = " glyphicon glyphicon-trash btn btn-default", @title = "Delete User" })
             </td>
         </tr>
 }

@@ -4,8 +4,9 @@
     ViewBag.Title = "Products";
 }
 
-<h2>Products</h2>
-<div class="" style="margin-top:10px;margin-bottom:10px;">
+<h2 style="color:#245980"><b>Store Products</b></h2>
+
+<div style="margin-top:40px;margin-bottom:20px;">
     @using (Html.BeginForm("Search", "Products"))
     {
         <div class="form-inline">
@@ -14,17 +15,17 @@
                 <input type="text" class="form-control" name="txtName">
             </div>
             <div class="form-group">
-                <button type="submit" class="btn btn-warning">Search</button>
+                <button type="submit" class="btn btn-striped" style="background-color:#bdeec4">Search</button>
             </div>
         </div>
 
     }
 </div>
 <p>
-    @Html.ActionLink(" ", "Create", null, null, new { @class = "glyphicon glyphicon-plus btn btn-default" })
+    @Html.ActionLink(" ", "Create", null, null, new { @class = "glyphicon glyphicon-plus btn btn-primary", @title = "Add Product To Store" })
 </p>
-<table class="table table-responsive table-hover">
-    <tr style="background-color:orange;">
+<table class="table table-responsive table-hover table-striped">
+    <tr style="background-color:#84acc9;">
         <th style="width:20%;">
             @Html.DisplayNameFor(model => model.name)
         </th>
@@ -38,7 +39,7 @@
             @Html.DisplayNameFor(model => model.image)
         </th>
 
-        <th style="width:20%; text-align:center"> פעולות</th>
+        <th style="width:20%;"> Operations</th>
     </tr>
 
     @foreach (var item in Model)
@@ -57,9 +58,9 @@
                 <img src="@Html.DisplayFor(modelItem => item.image)" style="width:50px;height:50px;" alt="Alternate Text" />
             </td>
             <td style="width:20%">
-                @Html.ActionLink("", "Edit", null, new { id = item.ID }, new { @class = " glyphicon glyphicon-pencil btn btn-default" })
-                @Html.ActionLink("", "Details", null, new { id = item.ID }, new { @class = " glyphicon glyphicon-list-alt btn btn-default" })
-                @Html.ActionLink("", "Delete", null, new { id = item.ID }, new { @class = " glyphicon glyphicon-trash btn btn-default" })
+                @Html.ActionLink("", "Edit", null, new { id = item.ID }, new { @class = " glyphicon glyphicon-pencil btn btn-default", @title = "Edit Product" })
+                @Html.ActionLink("", "Details", null, new { id = item.ID }, new { @class = " glyphicon glyphicon-list-alt btn btn-default", @title = "Details Product" })
+                @Html.ActionLink("", "Delete", null, new { id = item.ID }, new { @class = " glyphicon glyphicon-trash btn btn-default", @title = "Delete Product" })
             </td>
         </tr>
     }

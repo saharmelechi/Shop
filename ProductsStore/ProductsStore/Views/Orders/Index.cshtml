@@ -4,10 +4,35 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Orders</h2>
-<div class="" style="margin-top:10px;margin-bottom:10px;">
+<h2 style="color:#245980"><b>Orders List Of The Store</b></h2>
+
+@section Styles{
+
+    <style>
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            padding: 12px 16px;
+            z-index: 1;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+    </style>
+}
+
+<div style="margin-top:40px;margin-bottom:20px;">
     @using (Html.BeginForm("Search", "Orders"))
-            {
+    {
         <div class="form-inline">
             <div class="form-group">
                 <label>By User first or last name:</label>
@@ -15,16 +40,17 @@
             </div>
 
             <div class="form-group">
-                <button type="submit" class="btn btn-warning">Search</button>
+                <button type="submit" class="btn btn-striped" style="background-color:#bdeec4;">Search</button>
             </div>
         </div>
     }
 </div>
 <p>
-    @Html.ActionLink("Create New", "Create")
+
+    @*@Html.ActionLink(" ", "Create", null, null, new { @class = "glyphicon glyphicon-plus btn btn-default" })*@
 </p>
-<table class="table">
-    <tr>
+<table class="table table-hover table-striped">
+    <tr style="background-color:#84acc9;">
         <th>
             @Html.DisplayNameFor(model => model._order.User.firstName)
         </th>
@@ -54,25 +80,24 @@
             </td>
             <td>
                 <div class="dropdown">
-            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                מוצרים
-            </button>
-            <div class="dropdown-menu">
-                @foreach (var product in item.products)
-                {
-                    <p>
-                        <a class="dropdown-item" asp-controller="Products" asp-action="Details" asp-route-id="@product.ID">@product.name</a>
-                    </p>
+                    <button type="button" style="background-color:#bdeec4;" class="btn btn-striped dropdown-toggle" data-toggle="dropdown">
+                        Products
+                    </button>
+                    <div class="dropdown-content">
+                        @foreach (var product in item.products)
+                        {
+                            <p>
+                                <a class="dropdown-item" asp-controller="Products" asp-action="Details" asp-route-id="@product.ID">@product.name</a>
+                            </p>
+                        }
+                    </div>
+                </div>
 
-                }
-            </div>
-        </div>
- 
             </td>
             <td>
                 @*@Html.ActionLink("Edit", "Edit", new { id = item._order.ID }) |*@
                 @*@Html.ActionLink("Details", "Details", new { id = item._order.ID }) |*@
-                @Html.ActionLink("Delete", "Delete", new { id = item._order.ID })
+                @Html.ActionLink("", "Delete", null, new { id = item._order.ID }, new { @class = " glyphicon glyphicon-trash btn btn-default", @title = "Delete Order" })
             </td>
         </tr>
     }
