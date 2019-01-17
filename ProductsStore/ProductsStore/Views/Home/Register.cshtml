@@ -5,63 +5,55 @@
 }
 <script src="~/jquery-plugins/js/bootstrap-datepicker.js"></script>
 
-<h2>Register</h2>
+<div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+        <h2><label class="label label-info"><b>Register For Buying Online </b></label></h2>
+    </div>
+    <div class="col-md-4"></div>
+</div>
 
 @using (Html.BeginForm("Register", "Home", FormMethod.Post))
 {
     @Html.AntiForgeryToken()   
 
-    <div class="form-horizontal">
-        <h4>Account</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.firstName, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.firstName, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.firstName, "", new { @class = "text-danger" })
+<div class="row" style="margin-top:20px">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="firstName" class="control-label"></label>
+                <input asp-for="firstName" class="form-control" />
+                <span asp-validation-for="firstName" class="text-danger"></span>
             </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.lastName, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.lastName, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.lastName, "", new { @class = "text-danger" })
+            <div class="form-group">
+                <label asp-for="lastName" class="control-label"></label>
+                <input asp-for="lastName" class="form-control" />
+                <span asp-validation-for="lastName" class="text-danger"></span>
             </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.pass, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.pass, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.pass, "", new { @class = "text-danger" })
+            <div class="form-group">
+                <label asp-for="pass" class="control-label"></label>
+                <input asp-for="pass" class="form-control" />
+                <span asp-validation-for="pass" class="text-danger"></span>
             </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.email, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.email, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.email, "", new { @class = "text-danger" })
+            <div class="form-group">
+                <label asp-for="email" class="control-label"></label>
+                <input asp-for="email" class="form-control" />
+                <span asp-validation-for="email" class="text-danger"></span>
             </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.birthDate, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-
-                @Html.EditorFor(model => model.birthDate, new { htmlAttributes = new { @class = "form-control", @ID = "txtBirthDate" } })
-                @Html.ValidationMessageFor(model => model.birthDate, "", new { @class = "text-danger" })
+            <div class="form-group">
+                <label asp-for="birthDate" class="control-label"></label>
+                <input asp-for="birthDate" class="form-control" />
+                <span asp-validation-for="birthDate" class="text-danger"></span>
             </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-striped"/>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-striped" />
             </div>
-        </div>
+        </form>
     </div>
+    <div class="col-md-4"></div>
+</div>
 
 }
 

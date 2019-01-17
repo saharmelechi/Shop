@@ -6,52 +6,38 @@
 
 <h2>Create</h2>
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>Order</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.userID, "userID", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("userID", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.userID, "", new { @class = "text-danger" })
-            </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.orderDate, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.orderDate, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.orderDate, "", new { @class = "text-danger" })
-            </div>
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="User.ID" class="control-label"></label>
+                    <input asp-for="User.ID" class="form-control" />
+                    <span asp-validation-for="User.ID" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="orderDate" class="control-label"></label>
+                    <input asp-for="orderDate" class="form-control" />
+                    <span asp-validation-for="orderDate" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="creditCardNum" class="control-label"></label>
+                    <input asp-for="creditCardNum" class="form-control" />
+                    <span asp-validation-for="creditCardNum" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-default" />
+                </div>
+            </form>
         </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.creditCardNum, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.creditCardNum, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.creditCardNum, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        @*<div class="form-group">
-            @Html.LabelFor(model => model.amount, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.amount, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.amount, "", new { @class = "text-danger" })
-            </div>
-        </div>*@
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-striped" />
-            </div>
-        </div>
+        <div class="col-md-4"></div>
     </div>
+
 }
 
 <div>

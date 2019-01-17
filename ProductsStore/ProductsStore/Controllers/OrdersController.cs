@@ -144,84 +144,65 @@ namespace ProductsStore.Controllers
 
        
 
-        public ActionResult Reports()
+        public ActionResult UserReports()
         {
-            return View("Report", new List<UserOrderReport>());
+            return View("UserReport", new List<UserOrderReport>());
         }
 
         public ActionResult ProductsReports()
         {
-            return View("ProductsReport", new List<UserOrderReport>());
+            return View("ProductsReport", new List<OrderProdectsCount>());
         }
-
-        [HttpPost]
-        public ActionResult ApplyReport()
-        {
-            var result = from order in
-                 (
-                     from o in _context.Order
-                     select new
-                     {
-                         Order = o,
-                         UserName = o.userID
-                     }
-                 )
-                         orderby order.Order.userID
-                         group order by order.Order.userID into g
-                         select new
-                         {
-                             User = g.Key,
-                             UserName = "",
-                             Count = g.Count()
-                         };
-
-            var users = _context.User.ToList();
-            List<UserOrderReport> userOrderReports = new List<UserOrderReport>();
-            foreach (var item in result)
-            {
-                var user = users.Where(x => x.ID == item.User).FirstOrDefault();
-                userOrderReports.Add(new Models.UserOrderReport { Count = item.Count, UserName = (user.firstName + " " + user.lastName) });
-
-            }
-
-            return View("Report", userOrderReports);
-        }
+        
 
 
         public JsonResult GetUsersPerOrder()
         {
-            List<UserOrderPear> userOrders = new List<UserOrderPear>();
-            var users = _context.User.ToList();
+            var userOrders = new List<string>();
+            var orders = _context.Order.ToList();
+            var _usersOrder = new List<UserOrderReport>();
 
-            foreach (var item in users)
+            foreach (var item in orders)
             {
-                userOrders.Add(
-                    new UserOrderPear
+                if (!userOrders.Contains(item.userID.ToString()))
+                {
+                    userOrders.Add(item.userID.ToString());
+                    _usersOrder.Add(new UserOrderReport
                     {
-                        Name = item.firstName + " " + item.lastName,
-                        NumOfOrders = item.Orders.Count()
+                        UserName = _context.User.First(u => u.ID == item.userID).firstName,
+                        Count = orders.Count(x => x.userID == item.userID),
                     });
-
+                }
             }
-            return Json(userOrders);
+            return Json(_usersOrder);
         }
+
         public JsonResult GetProdectsPerOrder()
         {
-            List<UserOrderPear> productsPerOrders = new List<UserOrderPear>();
+            var productsPerOrders = new SortedDictionary<int, int>();
 
-            var products = _context.Product.ToList();
+            var products = _context.ProductOrders;
 
             foreach (var item in products)
             {
-                productsPerOrders.Add(
-                    new UserOrderPear
-                    {
-                        Name = item.name,
-                        NumOfOrders = item.Orders.Count()
-                    });
-
+                if (!productsPerOrders.ContainsKey(item.ProductId))
+                {
+                    productsPerOrders[item.ProductId] = 0;
+                }
+                productsPerOrders[item.ProductId] += item.CountOfProducts;
             }
-            return Json(productsPerOrders);
+
+            var productsCount = new List<OrderProdectsCount>();
+            foreach (var item in productsPerOrders)
+            {
+                productsCount.Add(new OrderProdectsCount()
+                {
+                    ProductName = _context.Product.First(k => k.ID == item.Key).name,
+                    Count = item.Value
+                });
+            }
+
+            return Json(productsCount);
         }
 
         protected override void Dispose(bool disposing)
@@ -246,11 +227,5 @@ namespace ProductsStore.Controllers
 
             return View("Index", orders);
         }
-    }
-
-    public class UserOrderPear
-    {
-        public string Name { get; set; }
-        public int NumOfOrders { get; set; }
     }
 }

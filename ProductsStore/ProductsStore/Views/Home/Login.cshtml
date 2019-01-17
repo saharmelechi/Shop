@@ -80,12 +80,12 @@
         margin-top: 10px;
     }
 </style>
-<div class="container">
+<div class="container-fluid">
     <div class="row">
         <div class="col-sm-6 col-md-4 col-md-offset-4">
             <h1 class="text-center login-title" style="color:#245980"><b>Sign in to continue shopping</b></h1>
             <div class="account-wall">
-                <img class="profile-img" src="http://www.cofix.co.il/wp-content/uploads/2015/06/Cofix-Tel-Aviv-6.jpg"
+                <img class="profile-img" src="https://i0.wp.com/www.winhelponline.com/blog/wp-content/uploads/2017/12/user.png?fit=256%2C256&quality=100&ssl=1"
                      alt="">
                 @using (Html.BeginForm("Login", "Home", FormMethod.Post, new { id = "formLogin" }))
                 {
@@ -95,10 +95,6 @@
                         <button class="btn btn-lg btn-striped btn-block" style="background-color:#bdeec4;" type="submit">
                             Sign in
                         </button>
-                        @*<label class="checkbox pull-left">
-                        <input type="checkbox" value="remember-me">
-                        Remember me
-                    </label>*@
                         <a href="mailto:help@alphateam.com?Subject=Login%20problem" class="pull-right need-help">Need help? </a><span class="clearfix"></span>
                     </div>
                 }
@@ -108,9 +104,13 @@
     </div>
 </div>
 
+
+
+
 @section Scripts {
 
     <script>
+
         $(document).ready(function () {
 
             // Key up search the products
@@ -125,7 +125,7 @@
                     url: url,
                     data: form.serialize(), // serializes the form's elements.
                     success: function (data) {
-                            window.location= '/';
+                        window.location = '/';
                     },
                     error: function (data) {
                         alert(data.responseText);

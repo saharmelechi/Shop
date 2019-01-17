@@ -4,11 +4,18 @@
     ViewData["Title"] = "Create";
 }
 
-<h2>Create</h2>
 
-<h4>User</h4>
-<hr />
 <div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+        <h2><label class="label label-info"><b>Add User For Buying Online </b></label></h2>
+    </div>
+    <div class="col-md-4"></div>
+</div>
+
+
+<div class="row" style="margin-top:20px;">
+    <div class="col-md-4"></div>
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -38,10 +45,11 @@
                 <span asp-validation-for="birthDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Create" class="btn btn-striped" />
             </div>
         </form>
     </div>
+    <div class="col-md-4"></div>
 </div>
 
 <div>

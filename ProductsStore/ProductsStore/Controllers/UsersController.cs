@@ -61,7 +61,7 @@ namespace ProductsStore.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(user);
+            return View("create");
         }
 
         // GET: Users/Edit/5

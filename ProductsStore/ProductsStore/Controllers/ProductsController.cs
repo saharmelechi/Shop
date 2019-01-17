@@ -286,8 +286,9 @@ namespace ProductsStore.Controllers
             o.orderDate = DateTime.Now;
             var id = ((User)Globals.getConnectedUser(HttpContext.Session)).ID;
             User u = _context.User.Where(x => x.ID == id).FirstOrDefault();
-            o.userID = u.ID;
+            //o.userID = u.ID;
             o.User = new User();
+            o.User = u;
             _context.Order.Add(o);
             Cart cart = (Cart)HttpContext.Session.GetString(Globals.CART_SESSION_KEY);
             foreach (var item in cart.Products)

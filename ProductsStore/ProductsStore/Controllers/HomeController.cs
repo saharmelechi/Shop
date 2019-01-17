@@ -177,9 +177,13 @@ namespace ProductsStore.Controllers
         [HttpPost]
         public ActionResult Register(User user)
         {
-            _context.User.Add(user);
-            _context.SaveChanges();
-            return View("Login");
+            if (ModelState.IsValid)
+            {
+                _context.User.Add(user);
+                _context.SaveChanges();
+                return RedirectToAction(nameof(Index));
+            }
+            return View("Register");
         }
 
         public ActionResult Register()
