@@ -11,5 +11,7 @@ namespace ProductsStore.Models
         public string City{ get; set; }
         public string Street { get; set; }
         public string Number { get; set; }
+        public double lat { get; set; }
+        public double lng { get; set; }
     }
 }

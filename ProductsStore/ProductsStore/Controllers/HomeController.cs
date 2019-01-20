@@ -256,8 +256,9 @@ namespace ProductsStore.Controllers
         [HttpPost]
         public JsonResult GetAddress()
         {
+            List<Position> _positions = new List<Position>();
 
-            var address = _context.Address.ToArray()[0];
+            var address = _context.Address.ToList();
 
             return Json(address);
         }

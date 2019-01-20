@@ -22,6 +22,7 @@ namespace ProductsStore.Controllers
         // GET: Addresses
         public ActionResult Index()
         {
+
             return View(_context.Address.ToList());
         }
 
@@ -51,16 +52,16 @@ namespace ProductsStore.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind("ID,City,Street,Number")] Address address)
+        public async Task<IActionResult> Create([Bind("ID,City,Street,Number,lat,lng")] Address address)
         {
             if (ModelState.IsValid)
             {
                 _context.Address.Add(address);
-                _context.SaveChanges();
-                return RedirectToAction("Index");
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
             }
 
-            return View(address);
+            return View("create");
         }
 
         // GET: Addresses/Edit/5
