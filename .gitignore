@@ -330,3 +330,4 @@ ASALocalRun/
 .mfractor/
 /ProductsStore/ProductsStore/Migrations/20190121085805_T12.cs
 /ProductsStore/ProductsStore/Migrations/20190121085805_T12.Designer.cs
+/ProductsStore/ProductsStore/storeModelML.txt

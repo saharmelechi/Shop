@@ -19,7 +19,7 @@ namespace ProductsStore
         private const string STOREMLFILE = "storeModelML.txt";
 
 
-        public static MLContext MLContext { get; private set; }
+        public static PredictionEngine<ProductEntry, Copurchase_prediction> predictionengine { get; private set; }
 
         static public string getConnectedUser(ISession session) {
             return session.GetString(USER_SESSION_KEY);
@@ -40,7 +40,7 @@ namespace ProductsStore
             // EXAMPLE FROM HERE: https://github.com/dotnet/machinelearning-samples/tree/master/samples/csharp/getting-started/MatrixFactorization_ProductRecommendation
 
             //STEP 1: Create MLContext to be shared across the model creation workflow objects 
-            MLContext = new MLContext();
+            MLContext MLContext = new MLContext();
 
             ITransformer model;
 
@@ -103,7 +103,9 @@ namespace ProductsStore
 
             //STEP 6: Create prediction engine and predict the score for Product 63 being co-purchased with Product 3.
             //        The higher the score the higher the probability for this particular productID being co-purchased 
-            var predictionengine = model.CreatePredictionEngine<ProductEntry, Copurchase_prediction>(MLContext);
+            predictionengine = model.CreatePredictionEngine<ProductEntry, Copurchase_prediction>(MLContext);
+
+            // MOVE THIS TO Prosuct
             var prediction = predictionengine.Predict(
                 new ProductEntry()
                 {
