@@ -26,7 +26,10 @@ namespace ProductsStore.Controllers
         // GET: Products
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Product.ToListAsync());
+            var prod = _context.Product.GroupBy(p => p.name).Select(g => g.OrderByDescending(p1 => p1.name)
+                                .FirstOrDefault());
+
+            return View(await prod.ToListAsync());
         }
 
         // GET: Products/Details/5
@@ -343,6 +346,9 @@ namespace ProductsStore.Controllers
                 prodName = prodName.ToLower();
                 products = products.Where(s => s.name.ToLower().Contains(prodName));
             }
+
+            products = products.GroupBy(p => p.name).Select(g => g.OrderByDescending(p1 => p1.name)
+                               .FirstOrDefault());
             return View("Index", products.ToList());
         }
 
