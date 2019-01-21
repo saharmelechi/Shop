@@ -19,6 +19,9 @@ namespace ProductsStore
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+
+            // Initiate ML for later use
+            Globals.InitiateML();
         }
 
 
