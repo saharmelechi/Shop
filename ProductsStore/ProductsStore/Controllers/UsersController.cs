@@ -148,5 +148,20 @@ namespace ProductsStore.Controllers
         {
             return _context.User.Any(e => e.ID == id);
         }
+
+
+        public ActionResult Search()
+        {
+            string userName = Request.Form["txtName"];
+            var users = from u in _context.User
+                           select u;
+            if (!String.IsNullOrEmpty(userName))
+            {
+                userName = userName.ToLower();
+                users = users.Where(u => u.firstName.ToLower().Contains(userName) || u.lastName.ToLower().Contains(userName));
+
+            }
+            return View("Index", users.ToList());
+        }
     }
 }

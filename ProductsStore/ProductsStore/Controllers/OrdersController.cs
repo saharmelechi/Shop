@@ -52,6 +52,8 @@ namespace ProductsStore.Controllers
             {
                 return new NotFoundResult();
             }
+            order.User = new User();
+            order.User.firstName = _context.User.First(u => u.ID == order.userID).firstName;
             return View(order);
         }
 
@@ -126,6 +128,8 @@ namespace ProductsStore.Controllers
             {
                 return new NotFoundResult();
             }
+            order.User = new User();
+            order.User.firstName = _context.User.First(u => u.ID == order.userID).firstName;
             return View(order);
         }
 
@@ -135,6 +139,8 @@ namespace ProductsStore.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Order order = _context.Order.Find(id);
+            order.User = new User();
+            order.User.firstName = _context.User.First(u => u.ID == order.userID).firstName;
             _context.Order.Remove(order);
             _context.SaveChanges();
             return RedirectToAction("Index");
@@ -218,14 +224,30 @@ namespace ProductsStore.Controllers
         public ActionResult Search()
         {
             var name = Request.Form["txtname"];
-            var orders = from p in _context.Order
-                         select p;
+            var orders = from o in _context.Order
+                         select o;
+            List<ShowOrderView> _orders = new List<ShowOrderView>();
             if (!String.IsNullOrEmpty(name))
             {
-                orders = orders.Where(s => s.User.firstName.Contains(name) || s.User.lastName.Contains(name));
+                
+                orders = orders.Where(s => s.User.firstName.ToLower().Contains(name) || s.User.lastName.ToLower().Contains(name));
+            }
+            foreach (var item in orders)
+            {
+                var productorders = _context.ProductOrders.Where(x => x.OrderId == item.ID);
+                var user = _context.User.First(f => f.ID == item.userID);
+                item.User = new User();
+                item.User.firstName = user.firstName;
+                List<Product> tempProd = new List<Product>();
+                foreach (var item2 in productorders)
+                {
+                    tempProd.Add(_context.Product.First(y => y.ID == item2.ProductId));
+
+                }
+                _orders.Add(new ShowOrderView(item, tempProd));
             }
 
-            return View("Index", orders);
+            return View("Index", _orders.ToList());
         }
     }
 }

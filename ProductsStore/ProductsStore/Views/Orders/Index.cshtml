@@ -1,5 +1,7 @@
 ﻿@model IEnumerable<ProductsStore.Models.ShowOrderView>
 
+
+
 @{
     ViewBag.Title = "Index";
 }
@@ -30,8 +32,8 @@
     </style>
 }
 
-@*<div style="margin-top:40px;margin-bottom:20px;">
-    @using (Html.BeginForm("Search", "Orders"))
+<div style="margin-top:40px;margin-bottom:20px;">
+    @using (Html.BeginForm("Search", "Orders", FormMethod.Post, new { id = "formSearch" }))
     {
         <div class="form-inline">
             <div class="form-group">
@@ -44,41 +46,41 @@
             </div>
         </div>
     }
-</div>*@
+</div>
 <p>
 
-    @*@Html.ActionLink(" ", "Create", null, null, new { @class = "glyphicon glyphicon-plus btn btn-default" })*@
+    @*@Html.ActionLink(" ", "Create", null, null, new { @class = "glyphicon glyphicon-plus btn btn-striped" })*@
 </p>
 <table class="table table-hover table-striped">
     <tr style="background-color:#84acc9;">
-        <th>
+        <th style="width:20%;">
             @Html.DisplayNameFor(model => model._order.User.firstName)
         </th>
-        <th>
+        <th style="width:20%;">
             @Html.DisplayNameFor(model => model._order.orderDate)
         </th>
-        <th>
+        <th style="width:20%;">
             @Html.DisplayNameFor(model => model._order.creditCardNum)
         </th>
-        <th>
+        <th style="width:20%;">
             Products Orders
         </th>
-        <th></th>
+        <th style="width:20%;">Operations</th>
     </tr>
 
     @foreach (var item in Model)
     {
         <tr>
-            <td>
+            <td style="width:20%;">
                 @Html.DisplayFor(modelItem => item._order.User.firstName)
             </td>
-            <td>
+            <td style="width:20%;">
                 @Html.DisplayFor(modelItem => item._order.orderDate)
             </td>
-            <td>
+            <td style="width:20%;">
                 @Html.DisplayFor(modelItem => item._order.creditCardNum)
             </td>
-            <td>
+            <td style="width:20%;">
                 <div class="dropdown">
                     <button type="button" style="background-color:#bdeec4;" class="btn btn-striped dropdown-toggle" data-toggle="dropdown">
                         Products
@@ -94,9 +96,9 @@
                 </div>
 
             </td>
-            <td>
-                @*@Html.ActionLink("Edit", "Edit", new { id = item._order.ID }) |*@
-                @*@Html.ActionLink("Details", "Details", new { id = item._order.ID }) |*@
+            <td style="width:20%;">
+                @Html.ActionLink("", "Edit", null, new { id = item._order.ID }, new { @class = " glyphicon glyphicon-pencil btn btn-default", @title = "Edit Order" })
+                @Html.ActionLink("", "Details", null, new { id = item._order.ID }, new { @class = " glyphicon glyphicon-list-alt btn btn-default", @title = "Details Order" })
                 @Html.ActionLink("", "Delete", null, new { id = item._order.ID }, new { @class = " glyphicon glyphicon-trash btn btn-default", @title = "Delete Order" })
             </td>
         </tr>

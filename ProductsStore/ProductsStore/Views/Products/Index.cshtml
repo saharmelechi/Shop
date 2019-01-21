@@ -6,8 +6,8 @@
 
 <h2 style="color:#245980"><b>Store Products</b></h2>
 
-@*<div style="margin-top:40px;margin-bottom:20px;">
-    @using (Html.BeginForm("Search", "Home"))
+<div style="margin-top:40px;margin-bottom:20px;">
+    @using (Html.BeginForm("Search", "Products", FormMethod.Post, new { id = "formSearch" }))
     {
         <div class="form-inline">
             <div class="form-group">
@@ -20,7 +20,7 @@
         </div>
 
     }
-</div>*@
+</div>
 <p style="margin-top:40px;margin-bottom:20px;">
     @Html.ActionLink(" ", "Create", null, null, new { @class = "glyphicon glyphicon-plus btn btn-primary", @title = "Add Product To Store" })
 </p>

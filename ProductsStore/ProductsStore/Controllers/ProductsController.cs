@@ -312,6 +312,19 @@ namespace ProductsStore.Controllers
 
         }
 
+        public ActionResult Search()
+        {
+            string prodName = Request.Form["txtName"];
+            var products = from p in _context.Product
+                           select p;
+            if (!String.IsNullOrEmpty(prodName))
+            {
+                prodName = prodName.ToLower();
+                products = products.Where(s => s.name.ToLower().Contains(prodName));
+            }
+            return View("Index",products.ToList());
+        }
+
 
         private bool ValidateCardLength(string cardNum)
         {

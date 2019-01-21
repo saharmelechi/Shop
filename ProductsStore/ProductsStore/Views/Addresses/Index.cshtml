@@ -20,6 +20,7 @@
         <th>
             @Html.DisplayNameFor(model => model.Number)
         </th>
+        <th>Opreations</th>
         
     </tr>
 
@@ -34,6 +35,11 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Number)
+            </td>
+            <td>
+                @Html.ActionLink("", "Edit", null, new { id = item.ID }, new { @class = " glyphicon glyphicon-pencil btn btn-default", @title = "Edit Adreess" })
+                @Html.ActionLink("", "Details", null, new { id = item.ID }, new { @class = " glyphicon glyphicon-list-alt btn btn-default", @title = "Details Of The Adrress" })
+                @Html.ActionLink("", "Delete", null, new { id = item.ID }, new { @class = " glyphicon glyphicon-trash btn btn-default", @title = "Delete Adrress" })
             </td>
         </tr>
     }
@@ -62,7 +68,6 @@
             Window.map = new google.maps.Map(
                 document.getElementById('map'), { zoom: 7, center: uluru });
             // The marker, positioned at Uluru
-            //var marker = new google.maps.Marker({ position: uluru, map: Window.map });
         }
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBHzTT4kjY8Rnl5pLF-MPb0VefwnrBI2dE&callback=initMap"></script>
@@ -77,8 +82,6 @@
             success: function (data, textStatus, jqXHR) {
                 var lis_marker = new Array();
                 for (var i = 0; i < data.length; i++) {
-                    //var marker = new google.maps.Marker({ position: { lat: data[i].lat, lng: data[i].lng }, map: Window.map });
-
 
                     lis_marker[i] = new google.maps.Marker({
                         map: Window.map,
