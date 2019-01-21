@@ -176,7 +176,7 @@ namespace ProductsStore.Controllers
                  new ProductEntry()
                  {
                      ProductID = (uint)(product.ID),
-                     CoPurchaseProductID = (uint)item.ID
+                     CoPurchaseProductID = (uint)(item.ID)
                  });
                 if(prediction.Score > max)
                 {

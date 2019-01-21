@@ -39,7 +39,7 @@ namespace ProductsStore.Controllers
                 return NotFound();
             }
 
-            return View(user);
+            return View("Details",user);
         }
 
         // GET: Users/Create
@@ -61,7 +61,7 @@ namespace ProductsStore.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View("create");
+            return View("Create");
         }
 
         // GET: Users/Edit/5
@@ -77,7 +77,7 @@ namespace ProductsStore.Controllers
             {
                 return NotFound();
             }
-            return View(user);
+            return View("Edit",user);
         }
 
         // POST: Users/Edit/5
@@ -112,7 +112,7 @@ namespace ProductsStore.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(user);
+            return View("Delete",user);
         }
 
         // GET: Users/Delete/5
@@ -130,7 +130,7 @@ namespace ProductsStore.Controllers
                 return NotFound();
             }
 
-            return View(user);
+            return View("Delete",user);
         }
 
         // POST: Users/Delete/5
@@ -154,7 +154,7 @@ namespace ProductsStore.Controllers
         {
             string userName = Request.Form["txtName"];
             var users = from u in _context.User
-                           select u;
+                        select u;
             if (!String.IsNullOrEmpty(userName))
             {
                 userName = userName.ToLower();

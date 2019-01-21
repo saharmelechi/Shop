@@ -13,15 +13,15 @@
             {
                 <div class="form-inline">
                     <div class="form-group">
-                        <label>By Name:</label>
+                        <label> By Name:</label>
                         <input type="text" class="form-control" name="prodName">
                     </div>
                     <div class="form-group">
-                        <label for="pwd">minimum Price:</label>
+                        <label for="pwd"> Minimum Price:</label>
                         <input type="number" class="form-control" name="txtFromPrice" placeholder="From">
                     </div>
                     <div class="form-group">
-                        <label for="pwd">MAX Price:</label>
+                        <label for="pwd"> MAX Price:</label>
                         <input type="number" class="form-control" name="txtToPrice" placeholder="From">
                     </div>
                     <div class="form-group">
@@ -64,14 +64,37 @@
             </div>
         </div>
     </div>
-    @*<div id="slikCaroucel">
-        @foreach (var item in Model.Products)
-        {
-            <img src="@Html.DisplayFor(modelItem => item.image)" style="width:50%;height:200px;" />
-        }
-    </div>*@
 </div>
+
+
+<div class="row">
+    <div class="col-12">
+        <h4>
+            <label class="label label-info"><b>If you have any Suggestions comment us :)</b></label>
+            
+        </h4>
+    </div>
+</div>
+
+
+<div class="fb-comments" data-href="https://developers.facebook.com/docs/plugins/comments#Products" data-numposts="5" data-order-by="time"></div>
+
+
+
+
+
 @section Scripts {
+
+    <div id="fb-root"></div>
+    <script>
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.2';
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));</script>
+
 
     <script>
         $(document).ready(function () {
