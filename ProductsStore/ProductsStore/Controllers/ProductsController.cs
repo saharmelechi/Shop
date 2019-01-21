@@ -160,12 +160,33 @@ namespace ProductsStore.Controllers
             {
                 return new BadRequestResult();
             }
+            PreferProduct prodss = new PreferProduct();
             Product product = _context.Product.Find(id);
+            prodss.ChoosedProduct = product;
+            Product p2 = new Product();
             if (product == null)
             {
                 return new NotFoundResult();
             }
-            return View("ProductDetails", product);
+            var prods = _context.Product;
+            double max = 0;
+            foreach (var item in prods)
+            {
+                var prediction = Globals.predictionengine.Predict(
+                 new ProductEntry()
+                 {
+                     ProductID = (uint)(product.ID),
+                     CoPurchaseProductID = (uint)item.ID
+                 });
+                if(prediction.Score > max)
+                {
+                    max = prediction.Score;
+                    p2 = _context.Product.Find(item.ID);
+                }
+
+            }
+            prodss.ProdPrefer = p2;
+            return View("ProductDetails", prodss);
         }
 
         public ActionResult AddToCart(int id)
@@ -322,7 +343,7 @@ namespace ProductsStore.Controllers
                 prodName = prodName.ToLower();
                 products = products.Where(s => s.name.ToLower().Contains(prodName));
             }
-            return View("Index",products.ToList());
+            return View("Index", products.ToList());
         }
 
 
@@ -363,7 +384,7 @@ namespace ProductsStore.Controllers
                 return false;
             }
 
-            
+
         }
 
     }
