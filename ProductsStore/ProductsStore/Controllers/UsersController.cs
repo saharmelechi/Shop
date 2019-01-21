@@ -21,7 +21,10 @@ namespace ProductsStore.Controllers
         // GET: Users
         public async Task<IActionResult> Index()
         {
-            return View(await _context.User.ToListAsync());
+
+            var u = _context.User.GroupBy(p => p.firstName).Select(g => g.OrderByDescending(p1 => p1.firstName)
+                               .FirstOrDefault());
+            return View(await u.ToListAsync());
         }
 
         // GET: Users/Details/5
@@ -161,6 +164,8 @@ namespace ProductsStore.Controllers
                 users = users.Where(u => u.firstName.ToLower().Contains(userName) || u.lastName.ToLower().Contains(userName));
 
             }
+            users = users.GroupBy(p => p.firstName).Select(g => g.OrderByDescending(p1 => p1.firstName)
+                   .FirstOrDefault());
             return View("Index", users.ToList());
         }
     }
